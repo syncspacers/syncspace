@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+</head>
+<body>
+    <h1>Iniciar sesión</h1>
+
+    <form th:action="@{/users/login}" method="post" th:object="${usuario}">
+        <div>
+            <label for="email">Email</label>
+            <input type="text" id="email" th:field="*{email}"/>
+        </div>
+
+        <div>
+            <label for="password">Contraseña</label>
+            <input type="text" id="password" th:field="*{password}"/>
+        </div>
+
+        <div>
+            <input type="submit" value="Iniciar sesión" />
+        </div>
+    </form>
+</body>
+</html>

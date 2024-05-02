@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar cuenta</title>
+</head>
+<body>
+    <h1>Registrar cuenta</h1>
+
+    <form th:action="@{/users/save}" method="post" th:object="${usuario}">
+        <div>
+            <label for="usuario">Usuario</label>
+            <input type="text" id="usuario" th:field="*{username}" />
+        </div>
+
+        <div>
+            <label for="email">Email</label>
+            <input type="text" id="email" th:field="*{email}"/>
+        </div>
+
+        <div>
+            <label for="password">Contraseña</label>
+            <input type="text" id="password" th:field="*{password}"/>
+        </div>
+
+        <div>
+            <input type="submit" value="Registrar" />
+        </div>
+    </form>
+</body>
+</html>
