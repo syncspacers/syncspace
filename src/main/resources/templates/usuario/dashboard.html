@@ -12,7 +12,14 @@
 
     <div th:each="archivo : ${usuario.archivos}">
         <a>Archivo: </a>
-        <a th:text="${archivo.nombre}"></a>
+        <a th:href="@{'/users/download/' + ${archivo.id}}" th:text="${archivo.nombre}"></a>
     </div>
+
+    <form method="POST" enctype="multipart/form-data" action="/users/upload">
+        <p>Subir archivo</p>
+
+        <input type="file" name="file" />
+        <input type="submit" value="Subir" />
+    </form>
 </body>
 </html>

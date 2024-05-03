@@ -5,6 +5,7 @@ import java.util.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -15,6 +16,9 @@ public class Archivo {
 
     @ManyToOne
     private Usuario usuario;
+
+    @Lob
+    private byte[] contenido;
 
     private boolean enPapelera;
 
@@ -111,5 +115,25 @@ public class Archivo {
      */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    /**
+     * @return El contenido del archivo en bytes
+     */
+    public byte[] getContenido() {
+        return contenido;
+    }
+
+    /**
+     * Establece el contenido del archivo en bytes
+     * @param contenido El contenido del archivo en bytes
+     */
+    public void setContenido(byte[] contenido) {
+        this.contenido = contenido;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s", nombre);
     }
 }
