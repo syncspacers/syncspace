@@ -39,6 +39,11 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @RequestMapping("/")
+    public String homepage() {
+        return "index";
+    }
+
     /*
      * Ruta para la página principal
      *
