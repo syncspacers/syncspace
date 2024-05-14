@@ -84,11 +84,11 @@
                 <i class="upload-x fa-solid fa-xmark"></i>
             </div>
             <div class="upload__bottom">
-                <form class="bottom__bottom-form" action="">
+                <form class="bottom__bottom-form" method="POST" enctype="multipart/form-data" action="/users/upload">
                     <div class="bottom-form__header">
                         <div class="header__upload">
                             <i class="upload__file fa-solid fa-plus"></i>
-                            <input class="bottom-form__file" type="file" required>
+                            <input class="bottom-form__file" type="file" name="file" required>
                         </div>
                     </div>
                     <div class="bottom-form__content">
@@ -705,184 +705,188 @@
                         </div>
                     </div>
 
-                    <div class="values__value" data-type="file">
-                        <div class="value__trash--form">
-                            <h1 class="trash--form">¿Estas seguro de eliminar el archivo?</h1>
-                            <br>
-                            <form class="trash--form__form" action="">
-                                <input class="trash--form__cancel" type="submit" value="Cancelar">
-                                <input class="trash--form__delete" type="submit" value="Eliminar">
-                            </form>
-                        </div>
-                        <div class="value__trash">
-                            <i class="trash-item fa-solid fa-trash"></i>
-                        </div>
-                        <div class="value__icon">
-                            <i class="icon fa-solid fa-file"></i>
-                        </div>
-                        <div class="value__title">imagen.png</div>
-                        <div class="value__info">
-                            <p class="info__size">91,7 MB</p>
-                            <p class="info__date">2025-05-05 12:47:39</p>
-                        </div>
-
-                        <div class="value__information">
-                            <div class="information__share">
-                                <i class="info-item fa-solid fa-share"></i>
-                                COMPARTIR
+                    <!---->
+                    <div th:each="archivo : ${usuario.archivos}">
+                        <div class="values__value" data-type="file">
+                            <div class="value__trash--form">
+                                <h1 class="trash--form">¿Estas seguro de eliminar el archivo?</h1>
+                                <br>
+                                <form class="trash--form__form" action="">
+                                    <input class="trash--form__cancel" type="submit" value="Cancelar">
+                                    <input class="trash--form__delete" type="submit" value="Eliminar">
+                                </form>
                             </div>
-                            <div class="information__download">
-                                <i class="info-item fa-solid fa-download"></i>
-                                DESCARGAR
+                            <div class="value__trash">
+                                <i class="trash-item fa-solid fa-trash"></i>
                             </div>
-                            <div class="information__rename">
-                                <i class="info-item fa-solid fa-pen"></i>
-                                CAMBIAR NOMBRE
+                            <div class="value__icon">
+                                <i class="icon fa-solid fa-file"></i>
                             </div>
-                            <div class="information__comentario">
-                                <i class="info-item fa-solid fa-comment"></i>
-                                COMENTARIO
+                            <div class="value__title" th:text="${archivo.nombre}" />
+                            <div class="value__info">
+                                <p class="info__size">91,7 MB</p>
+                                <p class="info__date" th:text="${archivo.fechaDeSubida}" />
                             </div>
-                            
-                            <form action="" class="information__form">
-                                <input class="form__name" type="text" placeholder="Nuevo nombre"> 
-
-
-                                <input class="form__submit" type="submit" value="ENVIAR">
-                            </form>
-
-                            <form action="" class="information__form__comentario">
-                                <input class="comentario__element" type="text" placeholder="Inserta una nota"> 
-
-
-                                <input class="form__submit" type="submit" value="ENVIAR">
-                            </form>
-
-                            <div class="share__types">
-                                <div class="share__public">
-                                    PUBLICO
+    
+                            <div class="value__information">
+                                <div class="information__share">
+                                    <i class="info-item fa-solid fa-share"></i>
+                                    COMPARTIR
                                 </div>
-                                <div class="share__private">
-                                    PRIVADO
+                                <div class="information__download" th:href="@{'/users/download/' + ${archivo.id}}">
+                                    <i class="info-item fa-solid fa-download"></i>
+                                    DESCARGAR
                                 </div>
-                                <div class="share__friends">
-                                    CON AMIGOS
+                                <div class="information__rename">
+                                    <i class="info-item fa-solid fa-pen"></i>
+                                    CAMBIAR NOMBRE
                                 </div>
-                            </div>
-
-                            <div class="share__types--active">
-                                <div class="types__enlace--publico">
-                                    ENLACE PUBLICO
+                                <div class="information__comentario">
+                                    <i class="info-item fa-solid fa-comment"></i>
+                                    COMENTARIO
                                 </div>
-
-                                <div class="types__enlace">
-                                    <input class="enlace__public" type="text" value="https://syncspace.com/download/publico123">
+                                
+                                <form action="" class="information__form">
+                                    <input class="form__name" type="text" placeholder="Nuevo nombre"> 
+    
+    
+                                    <input class="form__submit" type="submit" value="ENVIAR">
+                                </form>
+    
+                                <form action="" class="information__form__comentario">
+                                    <input class="comentario__element" type="text" placeholder="Inserta una nota"> 
+    
+    
+                                    <input class="form__submit" type="submit" value="ENVIAR">
+                                </form>
+    
+                                <div class="share__types">
+                                    <div class="share__public">
+                                        PUBLICO
+                                    </div>
+                                    <div class="share__private">
+                                        PRIVADO
+                                    </div>
+                                    <div class="share__friends">
+                                        CON AMIGOS
+                                    </div>
                                 </div>
-
-                                <button class="types__button">Crear enlace</button>
-                                <button class="types__button">Borrar enlace</button>
-
-                                <div class="enlace__config">
-                                    <input class="checkbutton__public" id="enlace_temporal" name="enlace__temporal" type="checkbox">
-                                    <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
+    
+                                <div class="share__types--active">
+                                    <div class="types__enlace--publico">
+                                        ENLACE PUBLICO
+                                    </div>
+    
+                                    <div class="types__enlace">
+                                        <input class="enlace__public" type="text" value="https://syncspace.com/download/publico123">
+                                    </div>
+    
+                                    <button class="types__button">Crear enlace</button>
+                                    <button class="types__button">Borrar enlace</button>
+    
+                                    <div class="enlace__config">
+                                        <input class="checkbutton__public" id="enlace_temporal" name="enlace__temporal" type="checkbox">
+                                        <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
+                                    </div>
+    
+                                    <span class="types__copied">
+                                        ¡Enlace copiado!
+                                    </span>
                                 </div>
-
-                                <span class="types__copied">
-                                    ¡Enlace copiado!
-                                </span>
-                            </div>
-
-                            <div class="share__types--private">
-                                <div class="types__enlace--publico">
-                                    ENLACE PRIVADO
+    
+                                <div class="share__types--private">
+                                    <div class="types__enlace--publico">
+                                        ENLACE PRIVADO
+                                    </div>
+    
+                                    <div class="types__enlace__private">
+                                        <input class="enlace__privado" type="text" value="https://syncspace.com/download/privado123">
+                                    </div>
+    
+                                    <div class="types__enlace--download">
+                                        CONTRASEÑA
+                                    </div>
+    
+                                    <div class="types__enlace">
+                                        <input class="enlace__password" type="text" placeholder="Inserta una contraseña">
+                                    </div>
+    
+                                    <button class="types__button">Crear enlace</button>
+                                    <button class="types__button">Borrar enlace</button>
+    
+                                    <div class="enlace__config">
+                                        <input class="checkbutton__private checkbutton__pulsado" id="enlace_temporal" name="enlace__temporal" type="checkbox">
+                                        <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
+                                    </div>
+    
+                                    <span class="types__copied">
+                                        ¡Enlace copiado!
+                                    </span>
                                 </div>
-
-                                <div class="types__enlace__private">
-                                    <input class="enlace__privado" type="text" value="https://syncspace.com/download/privado123">
+    
+                                <div class="share__types--friends">
+                                    <div class="types__enlace--publico">
+                                        ENLACE CON AMIGOS
+                                    </div>
+    
+                                    <div class="types__enlace__friends">
+                                        <input class="enlace__friends" type="text" value="https://syncspace.com/download/friends123">
+                                    </div>
+    
+                                    <button class="types__button">Crear enlace</button>
+    
+                                    <button class="types__button">Borrar enlace</button>
+    
+                                    <div class="types__enlace--download">
+                                        AÑADIR AMIGOS
+                                    </div>
+    
+                                    <div class="types__enlace">
+                                        <input class="enlace__password" type="text" placeholder="Inserta un email">
+                                    </div>
+    
+                                    <ul class="types__amigos">
+                                        <li class="amigos__amigo">
+                                            <div class="amigo__delete">
+                                                <i class="amigo__delete fa-solid fa-minus"></i>
+                                            </div>
+                                            sergioluisv88@gmail.com
+                                        </li>
+                                        <li class="amigos__amigo">
+                                            <div class="amigo__delete">
+                                                <i class="amigo__delete fa-solid fa-minus"></i>
+                                            </div>
+                                            luisemiliovas@gmail.com
+                                        </li>
+                                        <li class="amigos__amigo">
+                                            <div class="amigo__delete">
+                                                <i class="amigo__delete fa-solid fa-minus"></i>
+                                            </div>
+                                            testing@gmail.com
+                                        </li>
+                                        <li class="amigos__amigo">
+                                            <div class="amigo__delete">
+                                                <i class="amigo__delete fa-solid fa-minus"></i>
+                                            </div>
+                                            donjuanarbol@gmail.com
+                                        </li>
+                                    </ul>
+    
+                                    <button class="types__button">Añadir</button>
+    
+                                    <span class="types__copied">
+                                        ¡Enlace copiado!
+                                    </span>
                                 </div>
-
-                                <div class="types__enlace--download">
-                                    CONTRASEÑA
+                                
+    
+                                <div class="information__exit">
+                                    <i class="fa-solid fa-xmark"></i>
                                 </div>
-
-                                <div class="types__enlace">
-                                    <input class="enlace__password" type="text" placeholder="Inserta una contraseña">
-                                </div>
-
-                                <button class="types__button">Crear enlace</button>
-                                <button class="types__button">Borrar enlace</button>
-
-                                <div class="enlace__config">
-                                    <input class="checkbutton__private checkbutton__pulsado" id="enlace_temporal" name="enlace__temporal" type="checkbox">
-                                    <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
-                                </div>
-
-                                <span class="types__copied">
-                                    ¡Enlace copiado!
-                                </span>
-                            </div>
-
-                            <div class="share__types--friends">
-                                <div class="types__enlace--publico">
-                                    ENLACE CON AMIGOS
-                                </div>
-
-                                <div class="types__enlace__friends">
-                                    <input class="enlace__friends" type="text" value="https://syncspace.com/download/friends123">
-                                </div>
-
-                                <button class="types__button">Crear enlace</button>
-
-                                <button class="types__button">Borrar enlace</button>
-
-                                <div class="types__enlace--download">
-                                    AÑADIR AMIGOS
-                                </div>
-
-                                <div class="types__enlace">
-                                    <input class="enlace__password" type="text" placeholder="Inserta un email">
-                                </div>
-
-                                <ul class="types__amigos">
-                                    <li class="amigos__amigo">
-                                        <div class="amigo__delete">
-                                            <i class="amigo__delete fa-solid fa-minus"></i>
-                                        </div>
-                                        sergioluisv88@gmail.com
-                                    </li>
-                                    <li class="amigos__amigo">
-                                        <div class="amigo__delete">
-                                            <i class="amigo__delete fa-solid fa-minus"></i>
-                                        </div>
-                                        luisemiliovas@gmail.com
-                                    </li>
-                                    <li class="amigos__amigo">
-                                        <div class="amigo__delete">
-                                            <i class="amigo__delete fa-solid fa-minus"></i>
-                                        </div>
-                                        testing@gmail.com
-                                    </li>
-                                    <li class="amigos__amigo">
-                                        <div class="amigo__delete">
-                                            <i class="amigo__delete fa-solid fa-minus"></i>
-                                        </div>
-                                        donjuanarbol@gmail.com
-                                    </li>
-                                </ul>
-
-                                <button class="types__button">Añadir</button>
-
-                                <span class="types__copied">
-                                    ¡Enlace copiado!
-                                </span>
-                            </div>
-                            
-
-                            <div class="information__exit">
-                                <i class="fa-solid fa-xmark"></i>
                             </div>
                         </div>
                     </div>
+                    <!---->
                 </div>
             </article>
 

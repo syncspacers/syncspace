@@ -38,20 +38,18 @@
     </main>
 
     <section class="container">
-        <form action="" class="container__left">
+        <form th:action="@{/users/save}" method="post" th:object="${usuario}" class="container__left">
             <div class="left__input">
-                <input class="input__email" type="email" placeholder="Usuario" required>
-                <input class="input__email" type="email" placeholder="Email" required>
-                <input class="input__password" type="text" placeholder="Contraseña" required>
+                <input class="input__email" type="text" placeholder="Usuario" required th:field="*{username}">
+                <input class="input__email" type="email" placeholder="Email" required th:field="*{email}">
+                <input class="input__password" type="text" placeholder="Contraseña" required th:field="*{password}">
                 <input class="input__password" type="text" placeholder="Confirmar Contraseña" required>
             </div>
             <div class="left__session">
                 <a class="session__link" href="login.html">¿Ya tienes una cuenta? ¡Logeate!</a>
             </div>
             <div class="left__button">
-                <button class="button__login">
-                    REGISTRARSE
-                </button>
+                <input type="submit" class="button__login" value="REGISTRARSE" />
             </div>
         </form>
         <div class="container__right">
