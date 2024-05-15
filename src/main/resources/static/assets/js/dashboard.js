@@ -11,8 +11,8 @@ window.addEventListener('load', () => {
 
         // Función de comparación para ordenar por peso
         function sortBySize(a, b) {
-            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace(',', '').replace(' MB', ''));
-            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace(',', '').replace(' MB', ''));
+            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
+            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
             return sizeA - sizeB;
         }
 
@@ -33,8 +33,8 @@ window.addEventListener('load', () => {
 
         // Función de comparación para ordenar por peso
         function sortBySizeDesc(a, b) {
-            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace(',', '').replace(' MB', ''));
-            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace(',', '').replace(' MB', ''));
+            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
+            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
             return sizeB - sizeA; // Orden descendente por peso
         }
 
@@ -113,8 +113,8 @@ window.addEventListener('load', () => {
         }
 
         function filterBySize(item) {
-            const size = parseFloat(item.querySelector('.info__size').textContent.replace(',', '').replace(' MB', ''));
-            return size < 600;
+            const size = parseFloat(item.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
+            return size < 60;
         }
         
         // Filtrar el array por archivos ligeros
@@ -144,9 +144,8 @@ window.addEventListener('load', () => {
         }
 
         function filterBySizeUpper(item) {
-            const size = parseFloat(item.querySelector('.info__size').textContent.replace(',', '').replace(' MB', ''));
-            // 600 -> 60 megas
-            return size >= 600;
+            const size = parseFloat(item.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
+            return size >= 60;
         }
         
         // Filtrar el array por archivos ligeros

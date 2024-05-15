@@ -20,6 +20,9 @@ public class Archivo {
     @Lob
     private byte[] contenido;
 
+    private long filesize;
+    private String fileSizeMB;
+
     private boolean enPapelera;
 
     private Date fechaDeSubida;
@@ -130,10 +133,23 @@ public class Archivo {
      */
     public void setContenido(byte[] contenido) {
         this.contenido = contenido;
+        this.filesize = contenido.length;
+        this.fileSizeMB = String.format("%.2fMB", bytesToMB(this.filesize));
+    }
+
+    /**
+     * @return El tamaño del archivo en MB
+     */
+    public String getFileSizeMB() {
+        return fileSizeMB;
     }
 
     @Override
     public String toString() {
         return String.format("%s", nombre);
+    }
+
+    private float bytesToMB(long bytes) {
+        return bytes / 1024f / 1024f;
     }
 }
