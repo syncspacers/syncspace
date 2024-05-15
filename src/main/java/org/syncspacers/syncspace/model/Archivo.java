@@ -17,6 +17,9 @@ public class Archivo {
     @ManyToOne
     private Usuario usuario;
 
+    @ManyToOne
+    private Carpeta carpeta;
+
     @Lob
     private byte[] contenido;
 
@@ -118,6 +121,14 @@ public class Archivo {
      */
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Carpeta getCarpeta() {
+        return carpeta;
+    }
+
+    public void setCarpeta(Carpeta carpeta) {
+        this.carpeta = carpeta;
     }
 
     /**

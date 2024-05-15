@@ -2,11 +2,10 @@ package org.syncspacers.syncspace.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,15 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.syncspacers.syncspace.model.Archivo;
+import org.syncspacers.syncspace.model.Carpeta;
 import org.syncspacers.syncspace.model.Usuario;
 import org.syncspacers.syncspace.service.ArchivoService;
+import org.syncspacers.syncspace.service.CarpetaService;
 import org.syncspacers.syncspace.service.UsuarioService;
 
 import jakarta.servlet.http.Cookie;
@@ -32,9 +32,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UsuarioController {
 
     private static final String TOKEN_COOKIE = "sessionToken";
+    private static final String FOLDER_COOKIE = "folderID";
 
     @Autowired
     private ArchivoService archivoService;
+
+    @Autowired
+    private CarpetaService carpetaService;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -52,13 +56,31 @@ public class UsuarioController {
      */
     @RequestMapping("/dashboard")
     public String dashboard(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @CookieValue(value = FOLDER_COOKIE, defaultValue =  "") String carpetaID,
             Model model) {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Carpeta> carpetaData = carpetaService.findById(carpetaID);
         Usuario usuario;
+        Carpeta carpeta;
+        List<Archivo> archivos = null;
+        List<Carpeta> carpetas = null;
 
         if (usuarioData.isPresent()) {
             usuario = usuarioData.get();
+            
+            if (!carpetaData.isPresent()) {
+                archivos = usuario.getArchivos();
+                carpetas = usuario.getCarpetas();
+            } else {
+                carpeta = carpetaData.get();
+
+                archivos = carpeta.getArchivos();
+                carpetas = carpeta.getCarpetas();
+            }
+
             model.addAttribute("usuario", usuario);
+            model.addAttribute("archivos", archivos);
+            model.addAttribute("carpetas", carpetas);
             return "usuario/dashboard";
         } else {
             return "redirect:/login";
@@ -101,13 +123,21 @@ public class UsuarioController {
 
     @PostMapping("/users/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile file,
-            @CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken) {
+            @CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @CookieValue(value = FOLDER_COOKIE, defaultValue =  "") String carpetaID) {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Carpeta> carpetaData = carpetaService.findById(carpetaID);
         Archivo archivo = generateArchivoFromFile(file);
 
         if (usuarioData.isPresent() && archivo != null) {
             Usuario usuario = usuarioData.get();
-            archivo.setUsuario(usuario);
+
+            if (!carpetaData.isPresent()) {
+                archivo.setUsuario(usuario);
+            } else {
+                Carpeta carpeta = carpetaData.get();
+                archivo.setCarpeta(carpeta);
+            }
             archivoService.save(archivo);
         }
 
@@ -132,6 +162,30 @@ public class UsuarioController {
         return null;
     }
 
+    @PostMapping("/users/newfolder")
+    public String createFolder(@RequestParam("nombreCarpeta") String nombreCarpeta,
+            @CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @CookieValue(value = FOLDER_COOKIE, defaultValue =  "") String carpetaID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Carpeta> carpetaData = carpetaService.findById(carpetaID);
+        Carpeta carpeta;
+
+        if (usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+            carpeta = generateCarpetaFromName(nombreCarpeta);
+
+            if (carpetaData.isPresent()) {
+                carpeta.setCarpetaPadre(carpetaData.get());
+            } else {
+                carpeta.setUsuario(usuario);
+            }
+
+            carpetaService.save(carpeta);
+        }
+
+        return "redirect:/dashboard";
+    }
+
     private Archivo generateArchivoFromFile(MultipartFile file) {
         Archivo archivo = new Archivo();
 
@@ -145,5 +199,14 @@ public class UsuarioController {
         }
 
         return archivo;
+    }
+
+    private Carpeta generateCarpetaFromName(String nombreCarpeta) {
+        Carpeta carpeta = new Carpeta();
+
+        carpeta.setNombre(nombreCarpeta);
+        carpeta.setFechaDeSubida(new Date());
+
+        return carpeta;
     }
 }

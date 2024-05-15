@@ -17,6 +17,9 @@ public class Usuario {
     @OneToMany (mappedBy = "usuario", cascade = {CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private List<Archivo> archivos;
 
+    @OneToMany (mappedBy = "usuario", cascade = {CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    private List<Carpeta> carpetas;
+
     private String username;
     private String password;
 
@@ -82,5 +85,13 @@ public class Usuario {
      */
     public void setArchivos(List<Archivo> archivos) {
         this.archivos = archivos;
+    }
+
+    public List<Carpeta> getCarpetas() {
+        return carpetas;
+    }
+
+    public void setCarpetas(List<Carpeta> carpetas) {
+        this.carpetas = carpetas;
     }
 }

@@ -205,6 +205,14 @@ window.addEventListener('load', () => {
         container.innerHTML = ''; // Limpiar el contenedor antes de agregar los elementos filtrados
         filteredArray.forEach(item => container.appendChild(item));
     });
+    
+    let left__files = document.querySelector(".left__files");
+    left__files.addEventListener('click', () => {
+        console.log("volviendo a la raiz");
+        document.cookie = "folderID=";
+        location.reload();
+    });
+
     // Agregamos los filtros para que solo muestra los archivos
     let right__files = document.querySelector('.right__files');
     let copia_acarreada_files = null;
@@ -526,8 +534,10 @@ window.addEventListener('load', () => {
                 e.preventDefault();
                 value__information = valor.querySelector('.value__information');
                 borrar_ventana = valor.querySelector('.value__trash--form');
-                if ((value__information.style.display == '' || value__information.style.display == 'none') && (borrar_ventana.style.display == '' || borrar_ventana.style.display == 'none')) {
+                if (valor.getAttribute("data-type") == "folder") {
                     console.log("entramos en la carpeta");
+                    document.cookie = "folderID=" + valor.getAttribute("folderID");
+                    location.reload();
                 }
             });
             comentario.addEventListener('click', (e) => {
