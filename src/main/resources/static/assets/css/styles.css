@@ -823,6 +823,7 @@ body {
     width: 20rem;
     bottom: -12rem;
     right: -2rem;
+    z-index: 8;
 }
 
 .form-folder__header {
@@ -961,12 +962,14 @@ body {
 }
 
 .dashboard__content {
+    position: relative;
     width: 100%;
     height: 85%;
     background: var(--color-white);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 8;
 }
 
 .dashboard__footer {

@@ -64,6 +64,7 @@ public class UsuarioController {
         Carpeta carpeta;
         List<Archivo> archivos = null;
         List<Carpeta> carpetas = null;
+        String carpetaPadre = "";
 
         if (usuarioData.isPresent()) {
             usuario = usuarioData.get();
@@ -76,11 +77,16 @@ public class UsuarioController {
 
                 archivos = carpeta.getArchivos();
                 carpetas = carpeta.getCarpetas();
+                if (carpeta.getCarpetaPadre() != null) {
+                    carpetaPadre = Long.toString(carpeta.getCarpetaPadre().getId());
+                }
             }
 
             model.addAttribute("usuario", usuario);
             model.addAttribute("archivos", archivos);
             model.addAttribute("carpetas", carpetas);
+            model.addAttribute("carpetaPadre", carpetaPadre);
+            model.addAttribute("carpetaRaiz", !carpetaData.isPresent());
             return "usuario/dashboard";
         } else {
             return "redirect:/login";

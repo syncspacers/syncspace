@@ -167,6 +167,11 @@
             </article>
 
             <article class="dashboard__content">
+
+                <button class="content__back" th:carpetaPadre="${carpetaPadre}" th:carpetaRaiz="${carpetaRaiz}">
+                    <i class="back__item fa-solid fa-arrow-left"></i>
+                </button>
+
                 <div class="content__values">
                     <!---->
                     <div th:each="carpeta : ${carpetas}">
