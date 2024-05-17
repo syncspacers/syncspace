@@ -368,6 +368,12 @@ window.addEventListener('load', () => {
         formulario_upload.style.display = 'none';
     });
 
+    // Botón para volver atrás
+    let boton_back = document.querySelector('.content__back');
+    boton_back.addEventListener('click', () => {
+        console.log("clic en el boton de back");
+    });
+
     Array.from(archivos).forEach(function(valor, indice) {
         try {
             // boton de exit

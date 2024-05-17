@@ -1664,3 +1664,244 @@ body {
 .bottom-form__file {
     height: 100%;
 }
+
+/* Estilos para la pagina de enlaces */
+
+.container__share {
+    display: flex;
+    flex-direction: column;
+    height: 80rem;
+    width: 100%;
+}
+
+.share__header-share {
+    height: 30%;
+    background: rgb(40 41 41);
+}
+
+.share__content-share {
+    display: flex;
+    height: 80%;
+    background: rgb(255 240 244);
+}
+
+.footer__share {
+    margin-top: 0;
+}
+
+.share__header-share {
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.header-share__left,
+.header-share__center,
+.header-share__right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 35%;
+}
+
+.header-share__icon {
+    font-size: 10rem;
+    color: var(--color-pink);
+}
+
+.header-share__center {
+    display: flex;
+    flex-direction: column;
+}
+
+.center__top,
+.center__bottom {
+    width: 100%;
+    height: 50%;
+    color: var(--color-white);
+}
+
+.center__top {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: 2.7rem;
+}
+
+.center__bottom {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 2rem;
+    margin-top: 1rem;
+    color: var(--color-pink);
+}
+
+.right__form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.right__download {
+    height: 5rem;
+    width: 15rem;
+    background: var(--color-pink);
+    color: var(--color-black);
+    border: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+    border: 1px solid rgb(183, 178, 178);
+}
+
+.header-share__icon--redes {
+    font-size: 2rem;
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+}
+
+.header-share__icon--redes:hover {
+    color: var(--color-white);
+}
+
+
+
+.right__download:hover {
+    background: rgb(245, 149, 165);
+}
+
+.content-share-left,
+.content-share-right {
+    width: 50%;
+}
+
+.content-share-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.share__astronauta {
+    height: 37rem;
+    width: 23rem;
+}
+
+/* Estilos para la parte izquierda del contenido principal */
+
+.content-share-left__top {
+    display: flex;
+    padding: 4rem;
+}
+
+.top-left {
+    width: 50%;
+}
+
+.top-right {
+    width: 50%;
+    padding-left: 2rem;
+}
+
+.top-left {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 3rem;
+}
+
+.top-right__title {
+    color: var(--color-gray);
+    font-size: 2rem;
+}
+
+.top-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: var(--color-black);
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.content__size {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 70%;
+    margin: auto;
+    gap: 1rem;
+}
+
+.size__content {
+    width: 100%;
+    height: 100%;
+}
+
+.size__title {
+    width: 18rem;
+}
+
+.footer__share {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 27rem;
+    height: 4rem;
+    margin: auto;
+    background: linear-gradient(90deg, rgb(192 191 247), rgb(244 188 230));
+    color: var(--color-white);
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 3rem;
+}
+
+
+.footer_margin {
+    margin-top: 0;
+}
+
+.footer__content__share {
+    margin: 4rem auto;
+    height: 13rem;
+    width: 22rem;
+    background: rgb(192 191 247);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.3rem;
+    color: var(--color-black);
+    border: 1px solid rgb(183, 178, 178);
+    border-radius: 1rem;
+    box-shadow: 1px 1px 2px black;
+}
+
+.content-share-left__content {
+    width: 28%;
+    margin: auto;
+}
+
+/* Botón para volver atrás */
+
+.content__back{
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: #b8acf5;
+    color: var(--color-white);
+    border-radius: 1rem;
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+}
+
+.content__back:hover {
+    background-color: #c1b8ed;
+}
