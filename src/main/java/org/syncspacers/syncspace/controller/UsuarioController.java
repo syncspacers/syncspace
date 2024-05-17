@@ -144,6 +144,23 @@ public class UsuarioController {
         return "redirect:/dashboard";
     }
 
+    @RequestMapping("/preview/{fileId}")
+    public String previewFile(@PathVariable Long fileId, Model model) {
+        Optional<Archivo> archivoData = archivoService.findById(fileId);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+            String extensionArchivo = getFileExtension(archivo.getNombre());
+
+            model.addAttribute("archivo", archivo);
+            model.addAttribute("extensionArchivo", extensionArchivo);
+
+            return "usuario/share";
+        }
+
+        return "redirect:/dashboard";
+    }
+
     @RequestMapping("/users/download/{fileId}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Long fileId) {
         Optional<Archivo> archivoData = archivoService.findById(fileId);
@@ -154,7 +171,7 @@ public class UsuarioController {
             Archivo archivo = archivoData.get();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDispositionFormData("attachment", archivo.getNombre()); // Change "filename.ext" to your desired file name
+            headers.setContentDispositionFormData("attachment", archivo.getNombre());
 
             return new ResponseEntity<>(archivo.getContenido(), headers, HttpStatus.OK);
         }
@@ -208,5 +225,15 @@ public class UsuarioController {
         carpeta.setFechaDeSubida(new Date());
 
         return carpeta;
+    }
+
+    private String getFileExtension(String filename) {
+        int index = filename.lastIndexOf(".");
+
+        if (index > 0) {
+            return "Type " + filename.substring(index);
+        }
+
+        return "No extension";
     }
 }

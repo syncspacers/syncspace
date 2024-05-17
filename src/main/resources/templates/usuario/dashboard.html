@@ -351,7 +351,7 @@
                     </div>
 
                     <div th:each="archivo : ${archivos}">
-                        <div class="values__value" data-type="file">
+                        <div class="values__value" data-type="file" th:fileID="${archivo.id}">
                             <div class="value__trash--form">
                                 <h1 class="trash--form">¿Estas seguro de eliminar el archivo?</h1>
                                 <br>

@@ -368,12 +368,6 @@ window.addEventListener('load', () => {
         formulario_upload.style.display = 'none';
     });
 
-    // Botón para volver atrás
-    let boton_back = document.querySelector('.content__back');
-    boton_back.addEventListener('click', () => {
-        console.log("clic en el boton de back");
-    });
-
     Array.from(archivos).forEach(function(valor, indice) {
         try {
             // boton de exit
@@ -544,6 +538,9 @@ window.addEventListener('load', () => {
                     console.log("entramos en la carpeta");
                     document.cookie = "folderID=" + valor.getAttribute("folderID");
                     location.reload();
+                } else {
+                    console.log("entramos en el archivo");
+                    window.location.href = "/preview/" + valor.getAttribute("fileID");
                 }
             });
             comentario.addEventListener('click', (e) => {

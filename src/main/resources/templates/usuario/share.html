@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SyncSpace - Inicio</title>
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="assets/fonts/fontawesome-free-6.1.2-web/css/all.min.css">
+    <link rel="stylesheet" href="/assets/fonts/fontawesome-free-6.1.2-web/css/all.min.css">
     <!-- Estilos custom -->
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
     <!-- Ficheros de JS custom -->
 
     <!-- Particulas -->
@@ -18,7 +18,7 @@
 <body>
     <header class="header-login">
         <div class="header__title">
-            <img class="header__icon" src="assets/img/banner-crop.png" />
+            <img class="header__icon" src="/assets/img/banner-crop.png" />
         </div>
 
         <div class="header__buttons">
@@ -38,7 +38,7 @@
                 <i class="header-share__icon fa-solid fa-file"></i>
             </div>
             <div class="header-share__center">
-                <div class="center__top">Documento.txt</div>
+                <div class="center__top" th:text="${archivo.nombre}"></div>
                 <div class="center__bottom">
                     <i class="header-share__icon--redes fa-brands fa-telegram"></i>
                     <i class="header-share__icon--redes fa-solid fa-paperclip"></i>
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="header-share__right">
-                <form class="right__form" action="">
+                <form class="right__form" th:action="@{/users/download/{id}(id=${archivo.id})}">
                     <input type="submit" class="right__download" value="Descargar">
                 </form>
             </div>
@@ -58,18 +58,18 @@
                         <i class="header-share__icon fa-solid fa-file"></i>
                     </div>
                     <div class="top-right">
-                        <h2 class="top-right__title">Documento.txt</h2>
-                        <p class="top-right__subtitle">Type (.TXT)</p>
+                        <h2 class="top-right__title" th:text="${archivo.nombre}"></h2>
+                        <p class="top-right__subtitle" th:text="${extensionArchivo}"></p>
                     </div>
                 </div>
                 <div class="content-share-left__content">
                     <div class="content__size">
                         <h2 class="size__title">File Size: </h2>
-                        <span class="size__content">2,98KB</span>
+                        <span class="size__content" th:text="${archivo.fileSizeMB}"></span>
                     </div>
                     <div class="content__size">
                         <h2 class="size__title">Uploaded: </h2>
-                        <span class="size__content">2024-05-13 12:40:05</span>
+                        <span class="size__content" th:text="${archivo.fechaDeSubida}"></span>
                     </div>
                 </div>
                 <div class="content-share-left__footer">
@@ -89,7 +89,7 @@
 
     <footer class="footer footer_margin">
         <div class="footer__logo">
-            <img class="logo__icon" src="assets/img/banner-crop.png" />
+            <img class="logo__icon" src="/assets/img/banner-crop.png" />
         </div>
         <div class="footer__politicas">
             <h2 class="footer__title">Política de privacidad y política de cookies</h2>
