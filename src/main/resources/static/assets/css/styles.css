@@ -1983,3 +1983,8 @@ body {
     right: 0.5rem;
     cursor: pointer;
 }
+
+.trash__href {
+    color: inherit;
+    text-decoration: none;
+}

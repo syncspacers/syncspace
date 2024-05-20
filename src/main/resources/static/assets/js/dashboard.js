@@ -209,8 +209,7 @@ window.addEventListener('load', () => {
     let left__files = document.querySelector(".left__files");
     left__files.addEventListener('click', () => {
         console.log("volviendo a la raiz");
-        document.cookie = "folderID=";
-        location.reload();
+        window.location.href = "/dashboard";
     });
 
     // Agregamos los filtros para que solo muestra los archivos
@@ -562,8 +561,7 @@ window.addEventListener('load', () => {
                 borrar_ventana = valor.querySelector('.value__trash--form');
                 if (valor.getAttribute("data-type") == "folder") {
                     console.log("entramos en la carpeta");
-                    document.cookie = "folderID=" + valor.getAttribute("folderID");
-                    location.reload();
+                    window.location.href = "/dashboard/folder/" + valor.getAttribute("folderID")
                 } else {
                     console.log("entramos en el archivo");
                     window.location.href = "/preview/" + valor.getAttribute("fileID");
@@ -590,8 +588,11 @@ window.addEventListener('load', () => {
     let carpetaRaiz = button_back.getAttribute("carpetaRaiz");
     if (carpetaRaiz == "false") {
         button_back.addEventListener('click', (e) => {
-            document.cookie = "folderID=" + carpetaPadre;
-            location.reload();
+            if (carpetaPadre == null) {
+                window.location.href = "/dashboard";
+            } else {
+                window.location.href = "/dashboard/folder/" + carpetaPadre;
+            }
         });
     } else {
         button_back.style.display = 'none'

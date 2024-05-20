@@ -21,6 +21,11 @@ public class CarpetaService {
         carpetaRepository.saveAndFlush(carpeta);
     }
 
+    public void delete(Carpeta carpeta) {
+        carpetaRepository.delete(carpeta);
+        carpetaRepository.flush();
+    }
+
     /**
      * Devuelve la carpeta dado un identificador
      *
@@ -28,6 +33,7 @@ public class CarpetaService {
      * @return La carpeta asociada al identificador
      */
     public Optional<Carpeta> findById(String id) {
+        if (id == null) return Optional.empty();
         try {
             return findById(Long.parseLong(id));
         } catch (NumberFormatException e) {
@@ -36,6 +42,7 @@ public class CarpetaService {
     }
 
     public Optional<Carpeta> findById(Long id) {
+        if (id == null) return Optional.empty();
         return carpetaRepository.findById(id);
     }
 }

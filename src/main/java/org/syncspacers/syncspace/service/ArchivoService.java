@@ -21,6 +21,11 @@ public class ArchivoService {
         archivoRepository.saveAndFlush(archivo);
     }
 
+    public void delete(Archivo archivo) {
+        archivoRepository.delete(archivo);
+        archivoRepository.flush();
+    }
+
     /**
      * Devuelve el archivo dado un identificador
      *
@@ -28,6 +33,7 @@ public class ArchivoService {
      * @return El archivo asociado al identificador
      */
     public Optional<Archivo> findById(Long id) {
+        if (id == null) return Optional.empty();
         return archivoRepository.findById(id);
     }
 }

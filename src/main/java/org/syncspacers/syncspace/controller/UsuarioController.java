@@ -54,32 +54,55 @@ public class UsuarioController {
      * Necesita un valor correcto para TOKEN_COOKIE, en otro caso redirecciona a la página de
      * inicio de sesión
      */
-    @RequestMapping("/dashboard")
+    @RequestMapping(value = {"dashboard", "/dashboard/{seccion}", "/dashboard/folder/{folderID}"})
     public String dashboard(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
-            @CookieValue(value = FOLDER_COOKIE, defaultValue =  "") String carpetaID,
+            @PathVariable(required = false) Long folderID,
+            @PathVariable(required = false) String seccion,
             Model model) {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
-        Optional<Carpeta> carpetaData = carpetaService.findById(carpetaID);
+        Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
         Usuario usuario;
         Carpeta carpeta;
         List<Archivo> archivos = null;
         List<Carpeta> carpetas = null;
         String carpetaPadre = "";
+        boolean papelera = "papelera".equals(seccion);
 
         if (usuarioData.isPresent()) {
             usuario = usuarioData.get();
             
-            if (!carpetaData.isPresent()) {
+            if (papelera) {
                 archivos = usuario.getArchivos();
                 carpetas = usuario.getCarpetas();
+
+                archivos.removeIf(elem -> !elem.isEnPapelera());
+                carpetas.removeIf(elem -> !elem.isEnPapelera());
+            } else if (!carpetaData.isPresent()) {
+                archivos = usuario.getArchivos();
+                carpetas = usuario.getCarpetas();
+
+                archivos.removeIf(elem -> elem.getCarpeta() != null);
+                carpetas.removeIf(elem -> elem.getCarpetaPadre() != null);
+                model.addAttribute("carpetaActual", "");
             } else {
                 carpeta = carpetaData.get();
+
+                if (carpeta.isEnPapelera()) {
+                    return "redirect:/dashboard/papelera";
+                }
 
                 archivos = carpeta.getArchivos();
                 carpetas = carpeta.getCarpetas();
                 if (carpeta.getCarpetaPadre() != null) {
                     carpetaPadre = Long.toString(carpeta.getCarpetaPadre().getId());
                 }
+
+                model.addAttribute("carpetaActual", carpeta.getId());
+            }
+
+            if (!papelera) {
+                archivos.removeIf(elem -> elem.isEnPapelera());
+                carpetas.removeIf(elem -> elem.isEnPapelera());
             }
 
             model.addAttribute("usuario", usuario);
@@ -87,6 +110,7 @@ public class UsuarioController {
             model.addAttribute("carpetas", carpetas);
             model.addAttribute("carpetaPadre", carpetaPadre);
             model.addAttribute("carpetaRaiz", !carpetaData.isPresent());
+            model.addAttribute("enPapalera", papelera);
             return "usuario/dashboard";
         } else {
             return "redirect:/login";
@@ -127,10 +151,11 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/users/upload")
+    
+    @PostMapping(value = {"/users/upload/", "/users/upload/{carpetaID}"})
 	public String uploadFile(@RequestParam("file") MultipartFile file,
             @CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
-            @CookieValue(value = FOLDER_COOKIE, defaultValue =  "") String carpetaID) {
+            @PathVariable(required = false) Long carpetaID) {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Carpeta> carpetaData = carpetaService.findById(carpetaID);
         Archivo archivo = generateArchivoFromFile(file);
@@ -138,16 +163,19 @@ public class UsuarioController {
         if (usuarioData.isPresent() && archivo != null) {
             Usuario usuario = usuarioData.get();
 
-            if (!carpetaData.isPresent()) {
-                archivo.setUsuario(usuario);
-            } else {
+            archivo.setUsuario(usuario);
+            if (carpetaData.isPresent()) {
                 Carpeta carpeta = carpetaData.get();
                 archivo.setCarpeta(carpeta);
             }
             archivoService.save(archivo);
         }
 
-        return "redirect:/dashboard";
+        if (carpetaID == null) {
+            return "redirect:/dashboard";
+        } else {
+            return "redirect:/dashboard/folder/" + carpetaID;
+        }
     }
 
     @RequestMapping("/preview/{fileId}")
@@ -185,10 +213,10 @@ public class UsuarioController {
         return null;
     }
 
-    @PostMapping("/users/newfolder")
+    @PostMapping(value = {"/users/newfolder", "/users/newfolder/", "/users/newfolder/{carpetaID}"})
     public String createFolder(@RequestParam("nombreCarpeta") String nombreCarpeta,
             @CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
-            @CookieValue(value = FOLDER_COOKIE, defaultValue =  "") String carpetaID) {
+            @PathVariable(required = false) Long carpetaID) {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Carpeta> carpetaData = carpetaService.findById(carpetaID);
         Carpeta carpeta;
@@ -197,10 +225,9 @@ public class UsuarioController {
             Usuario usuario = usuarioData.get();
             carpeta = generateCarpetaFromName(nombreCarpeta);
 
+            carpeta.setUsuario(usuario);
             if (carpetaData.isPresent()) {
                 carpeta.setCarpetaPadre(carpetaData.get());
-            } else {
-                carpeta.setUsuario(usuario);
             }
 
             carpetaService.save(carpeta);
@@ -234,6 +261,42 @@ public class UsuarioController {
             carpetaService.save(carpeta);
         }
 
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/deletefile/{fileID}")
+    public String deleteFile(@PathVariable("fileID") Long fileID) {
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+
+            if (archivo.isEnPapelera()) {
+                archivoService.delete(archivo);
+            } else {
+                archivo.setEnPapelera(true);
+                archivoService.save(archivo);
+            }
+        }
+        
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/deletefolder/{folderID}")
+    public String deleteFolder(@PathVariable("folderID") Long folderID) {
+        Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
+
+        if (carpetaData.isPresent()) {
+            Carpeta carpeta = carpetaData.get();
+
+            if (carpeta.isEnPapelera()) {
+                carpetaService.delete(carpeta);
+            } else {
+                carpeta.setEnPapelera(true);
+                carpetaService.save(carpeta);
+            }
+        }
+        
         return "redirect:/dashboard";
     }
 

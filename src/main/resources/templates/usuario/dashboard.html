@@ -62,7 +62,7 @@
 
                 <div class="signup_login__add-folder">
                     <i class="fa-solid fa-folder-plus"></i>
-                    <form class="signup_login__form-folder" method="POST" enctype="multipart/form-data" action="/users/newfolder">
+                    <form class="signup_login__form-folder" method="POST" enctype="multipart/form-data" th:action="@{'/users/newfolder/' + ${carpetaActual}}">
                         <div class="form-folder__top">
                             <h1 class="form-folder__header">Crear una nueva carpeta</h1>
                         </div>
@@ -84,7 +84,7 @@
                 <i class="upload-x fa-solid fa-xmark"></i>
             </div>
             <div class="upload__bottom">
-                <form class="bottom__bottom-form" method="POST" enctype="multipart/form-data" action="/users/upload">
+                <form class="bottom__bottom-form" method="POST" enctype="multipart/form-data" th:action="@{'/users/upload/' + ${carpetaActual}}">
                     <div class="bottom-form__header">
                         <div class="header__upload">
                             <i class="upload__file fa-solid fa-plus"></i>
@@ -125,9 +125,9 @@
                         <i class="option-icon fa-solid fa-share"></i>
                         COMPARTIDO
                     </li>
-                    <li class="left__option">
+                    <li class="left__option left__trash">
                         <i class="option-icon fa-solid fa-trash"></i>
-                        PAPELERA
+                        <a class="trash__href" th:href="@{'/dashboard/papelera'}">PAPELERA</a>
                     </li>
                     <li class="left__option">
                         <i class="option-icon fa-solid fa-gear"></i>
@@ -179,8 +179,8 @@
                             <div class="value__trash--form">
                                 <h1 class="trash--form">¿Estas seguro de eliminar el archivo?</h1>
                                 <br>
-                                <form class="trash--form__form" action="">
-                                    <input class="trash--form__cancel" type="submit" value="Cancelar">
+                                <form class="trash--form__form" method="POST" enctype="multipart/form-data" th:action="@{'/users/deletefolder/' + ${carpeta.id}}" >
+                                    <input class="trash--form__cancel" type="button" value="Cancelar">
                                     <input class="trash--form__delete" type="submit" value="Eliminar">
                                 </form>
                             </div>
@@ -358,8 +358,8 @@
                             <div class="value__trash--form">
                                 <h1 class="trash--form">¿Estas seguro de eliminar el archivo?</h1>
                                 <br>
-                                <form class="trash--form__form" action="">
-                                    <input class="trash--form__cancel" type="submit" value="Cancelar">
+                                <form class="trash--form__form" method="POST" enctype="multipart/form-data" th:action="@{'/users/deletefile/' + ${archivo.id}}" >
+                                    <input class="trash--form__cancel" type="button" value="Cancelar">
                                     <input class="trash--form__delete" type="submit" value="Eliminar">
                                 </form>
                             </div>
