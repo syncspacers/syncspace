@@ -171,11 +171,11 @@ public class UsuarioController {
             archivoService.save(archivo);
         }
 
-        if (carpetaID == null) {
-            return "redirect:/dashboard";
-        } else {
+        if (carpetaID != null) {
             return "redirect:/dashboard/folder/" + carpetaID;
         }
+
+        return "redirect:/dashboard";
     }
 
     @RequestMapping("/preview/{fileId}")
@@ -220,6 +220,7 @@ public class UsuarioController {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Carpeta> carpetaData = carpetaService.findById(carpetaID);
         Carpeta carpeta;
+        Carpeta carpetaPadre = null;
 
         if (usuarioData.isPresent()) {
             Usuario usuario = usuarioData.get();
@@ -227,10 +228,15 @@ public class UsuarioController {
 
             carpeta.setUsuario(usuario);
             if (carpetaData.isPresent()) {
-                carpeta.setCarpetaPadre(carpetaData.get());
+                carpetaPadre = carpetaData.get();
+                carpeta.setCarpetaPadre(carpetaPadre);
             }
 
             carpetaService.save(carpeta);
+        }
+
+        if (carpetaPadre != null) {
+            return "redirect:/dashboard/folder/" + carpetaPadre.getId();
         }
 
         return "redirect:/dashboard";
@@ -240,13 +246,19 @@ public class UsuarioController {
     public String renameFile(@PathVariable("fileID") Long fileID,
             @RequestParam("nuevoNombre") String nuevoNombre) {
         Optional<Archivo> archivoData = archivoService.findById(fileID);
+        Carpeta carpetaPadre = null;
 
         if (archivoData.isPresent()) {
             Archivo archivo = archivoData.get();
+            carpetaPadre = archivo.getCarpeta();
             archivo.setNombre(nuevoNombre);
             archivoService.save(archivo);
         }
 
+        if (carpetaPadre != null) {
+            return "redirect:/dashboard/folder/" + carpetaPadre.getId();
+        }
+        
         return "redirect:/dashboard";
     }
 
@@ -254,11 +266,17 @@ public class UsuarioController {
     public String renameFolder(@PathVariable("folderID") Long folderID,
             @RequestParam("nuevoNombre") String nuevoNombre) {
         Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
+        Carpeta carpetaPadre = null;
 
         if (carpetaData.isPresent()) {
             Carpeta carpeta = carpetaData.get();
+            carpetaPadre = carpeta.getCarpetaPadre();
             carpeta.setNombre(nuevoNombre);
             carpetaService.save(carpeta);
+        }
+
+        if (carpetaPadre != null) {
+            return "redirect:/dashboard/folder/" + carpetaPadre.getId();
         }
 
         return "redirect:/dashboard";
@@ -267,12 +285,15 @@ public class UsuarioController {
     @PostMapping("/users/deletefile/{fileID}")
     public String deleteFile(@PathVariable("fileID") Long fileID) {
         Optional<Archivo> archivoData = archivoService.findById(fileID);
+        Carpeta carpetaPadre = null;
 
         if (archivoData.isPresent()) {
             Archivo archivo = archivoData.get();
+            carpetaPadre = archivo.getCarpeta();
 
             if (archivo.isEnPapelera()) {
                 archivoService.delete(archivo);
+                return "redirect:/dashboard/papelera";
             } else {
                 archivo.setEnPapelera(true);
                 archivo.setCarpeta(null);
@@ -280,18 +301,25 @@ public class UsuarioController {
             }
         }
         
+        if (carpetaPadre != null) {
+            return "redirect:/dashboard/folder/" + carpetaPadre.getId();
+        }
+
         return "redirect:/dashboard";
     }
 
     @PostMapping("/users/deletefolder/{folderID}")
     public String deleteFolder(@PathVariable("folderID") Long folderID) {
         Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
+        Carpeta carpetaPadre = null;
 
         if (carpetaData.isPresent()) {
             Carpeta carpeta = carpetaData.get();
+            carpetaPadre = carpeta.getCarpetaPadre();
 
             if (carpeta.isEnPapelera()) {
                 carpetaService.delete(carpeta);
+                return "redirect:/dashboard/papelera";
             } else {
                 carpeta.setEnPapelera(true);
                 carpeta.setCarpetaPadre(null);
@@ -299,6 +327,10 @@ public class UsuarioController {
             }
         }
         
+        if (carpetaPadre != null) {
+            return "redirect:/dashboard/folder/" + carpetaPadre.getId();
+        }
+
         return "redirect:/dashboard";
     }
 
