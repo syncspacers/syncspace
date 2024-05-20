@@ -410,6 +410,12 @@ window.addEventListener('load', () => {
             let comentario_result = valor.querySelector('.comentario__element');
             // download file button
             let download_file = valor.querySelector('.information__download');
+            let papelera_restore = valor.querySelector('.value__restore');
+            if (papelera_restore != null) {
+                papelera_restore.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
             comentario_result.addEventListener('click', (e) => {
                 e.stopPropagation();
             });

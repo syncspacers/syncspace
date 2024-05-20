@@ -187,6 +187,11 @@
                             <div class="value__trash">
                                 <i class="trash-item fa-solid fa-trash"></i>
                             </div>
+                            <div class="value__restore" th:if="${enPapalera} == true">
+                                <a class="header__link" href="#" th:href="@{'/users/restorefolder/' + ${carpeta.id}}">
+                                    <i class="fa-solid fa-window-restore"></i>
+                                </a>
+                            </div>
                             <div class="value__icon">
                                 <i class="icon fa-solid fa-folder"></i>
                             </div>
@@ -365,6 +370,11 @@
                             </div>
                             <div class="value__trash">
                                 <i class="trash-item fa-solid fa-trash"></i>
+                            </div>
+                            <div class="value__restore" th:if="${enPapalera} == true">
+                                <a class="header__link" href="#" th:href="@{'/users/restorefile/' + ${archivo.id}}">
+                                    <i class="fa-solid fa-window-restore"></i>
+                                </a>
                             </div>
                             <div class="value__icon">
                                 <i class="icon fa-solid fa-file"></i>

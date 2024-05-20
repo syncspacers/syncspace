@@ -275,6 +275,7 @@ public class UsuarioController {
                 archivoService.delete(archivo);
             } else {
                 archivo.setEnPapelera(true);
+                archivo.setCarpeta(null);
                 archivoService.save(archivo);
             }
         }
@@ -293,11 +294,40 @@ public class UsuarioController {
                 carpetaService.delete(carpeta);
             } else {
                 carpeta.setEnPapelera(true);
+                carpeta.setCarpetaPadre(null);
                 carpetaService.save(carpeta);
             }
         }
         
         return "redirect:/dashboard";
+    }
+
+    @RequestMapping("/users/restorefile/{fileID}")
+    public String restoreFile(@PathVariable("fileID") Long fileID) {
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+
+            archivo.setEnPapelera(false);
+            archivo.setCarpeta(null);
+            archivoService.save(archivo);
+        }
+        
+        return "redirect:/dashboard/papelera";
+    }
+
+    @RequestMapping("/users/restorefolder/{folderID}")
+    public String restoreFolder(@PathVariable("folderID") Long folderID) {
+        Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
+
+        if (carpetaData.isPresent()) {
+            Carpeta carpeta = carpetaData.get();
+            carpeta.setEnPapelera(false);
+            carpetaService.save(carpeta);
+        }
+        
+        return "redirect:/dashboard/papelera";
     }
 
     private Archivo generateArchivoFromFile(MultipartFile file) {

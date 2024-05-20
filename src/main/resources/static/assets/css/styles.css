@@ -1988,3 +1988,20 @@ body {
     color: inherit;
     text-decoration: none;
 }
+
+.value__restore {
+    font-size: 2rem;
+    position: absolute;
+    left: 0;
+    bottom: 0.8rem;
+    cursor: pointer;
+}
+
+.value__restore {
+    list-style: none;
+}
+
+.header__link {
+    color: inherit;
+    text-decoration: none;
+}
