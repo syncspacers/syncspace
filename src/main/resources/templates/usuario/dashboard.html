@@ -214,10 +214,8 @@
                                     COMENTARIO
                                 </div>
                                 
-                                <form action="" class="information__form">
-                                    <input class="form__name" type="text" placeholder="Nuevo nombre"> 
-
-
+                                <form method="POST" enctype="multipart/form-data" th:action="@{'/users/renamefolder/' + ${carpeta.id}}" class="information__form">
+                                    <input class="form__name" type="text" placeholder="Nuevo nombre" required name="nuevoNombre">
                                     <input class="form__submit" type="submit" value="ENVIAR">
                                 </form>
 
@@ -395,10 +393,8 @@
                                     COMENTARIO
                                 </div>
                                 
-                                <form action="" class="information__form">
-                                    <input class="form__name" type="text" placeholder="Nuevo nombre"> 
-    
-    
+                                <form method="POST" enctype="multipart/form-data" th:action="@{'/users/renamefile/' + ${archivo.id}}" class="information__form">
+                                    <input class="form__name" type="text" placeholder="Nuevo nombre" required name="nuevoNombre">
                                     <input class="form__submit" type="submit" value="ENVIAR">
                                 </form>
     

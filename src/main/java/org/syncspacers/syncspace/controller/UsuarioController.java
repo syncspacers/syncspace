@@ -209,6 +209,34 @@ public class UsuarioController {
         return "redirect:/dashboard";
     }
 
+    @PostMapping("/users/renamefile/{fileID}")
+    public String renameFile(@PathVariable("fileID") Long fileID,
+            @RequestParam("nuevoNombre") String nuevoNombre) {
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+            archivo.setNombre(nuevoNombre);
+            archivoService.save(archivo);
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/renamefolder/{folderID}")
+    public String renameFolder(@PathVariable("folderID") Long folderID,
+            @RequestParam("nuevoNombre") String nuevoNombre) {
+        Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
+
+        if (carpetaData.isPresent()) {
+            Carpeta carpeta = carpetaData.get();
+            carpeta.setNombre(nuevoNombre);
+            carpetaService.save(carpeta);
+        }
+
+        return "redirect:/dashboard";
+    }
+
     private Archivo generateArchivoFromFile(MultipartFile file) {
         Archivo archivo = new Archivo();
 
