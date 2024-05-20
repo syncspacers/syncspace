@@ -18,16 +18,25 @@
 <body>
     <header class="header-login">
         <div class="header__title">
-            <img class="header__icon" src="/assets/img/banner-crop.png" />
+            <a class="header__link" href="#" th:href="@{/}">
+                <img class="header__icon" src="/assets/img/banner-crop.png" />
+            </a>
+
         </div>
 
         <div class="header__buttons">
             <div class="buttons__upgrade">
-                <button class="upgrade__button">UPGRADE</button>
+                <form action="#" th:action="@{/}" method="get">
+                    <button class="upgrade__button">UPGRADE</button>
+                </form>
             </div>
             <div class="buttons__signup_login">
-                <button class="signup_login__signup">SIGN UP</button>
-                <button class="signup_login__signup">LOG IN</button>
+                <form action="#" th:action="@{/register}" method="get">
+                    <button type="submit" class="signup_login__signup">SIGN UP</button>
+                </form>
+                <form action="#" th:action="@{/login}" method="get">
+                    <button type="submit" class="signup_login__signup">LOG IN</button>
+                </form>
             </div>
         </div>
     </header>
@@ -42,11 +51,11 @@
             <div class="left__input">
                 <input class="input__email" type="text" placeholder="Usuario" required th:field="*{username}">
                 <input class="input__email" type="email" placeholder="Email" required th:field="*{email}">
-                <input class="input__password" type="text" placeholder="Contraseña" required th:field="*{password}">
-                <input class="input__password" type="text" placeholder="Confirmar Contraseña" required>
+                <input class="input__password" type="password" placeholder="Contraseña" required th:field="*{password}">
+                <input class="input__password" type="password" placeholder="Confirmar Contraseña" required>
             </div>
             <div class="left__session">
-                <a class="session__link" href="login.html">¿Ya tienes una cuenta? ¡Logeate!</a>
+                <a class="session__link" th:href="@{/login}">¿Ya tienes una cuenta? ¡Logeate!</a>
             </div>
             <div class="left__button">
                 <input type="submit" class="button__login" value="REGISTRARSE" />

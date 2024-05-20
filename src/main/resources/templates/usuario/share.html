@@ -10,7 +10,7 @@
     <!-- Estilos custom -->
     <link rel="stylesheet" href="/assets/css/styles.css">
     <!-- Ficheros de JS custom -->
-
+    <script src="/assets/js/links.js"></script>
     <!-- Particulas -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
@@ -18,16 +18,25 @@
 <body>
     <header class="header-login">
         <div class="header__title">
-            <img class="header__icon" src="/assets/img/banner-crop.png" />
+            <a class="header__link" href="#" th:href="@{/}">
+                <img class="header__icon" src="/assets/img/banner-crop.png" />
+            </a>
         </div>
 
         <div class="header__buttons">
             <div class="buttons__upgrade">
-                <button class="upgrade__button">UPGRADE</button>
+
+                <form action="#" th:action="@{/}" method="get">
+                    <button class="upgrade__button">UPGRADE</button>
+                </form>
             </div>
             <div class="buttons__signup_login">
-                <button class="signup_login__signup">SIGN UP</button>
-                <button class="signup_login__signup">LOG IN</button>
+                <form action="#" th:action="@{/register}" method="get">
+                    <button type="submit" class="signup_login__signup">SIGN UP</button>
+                </form>
+                <form action="#" th:action="@{/login}" method="get">
+                    <button type="submit" class="signup_login__signup">LOG IN</button>
+                </form>
             </div>
         </div>
     </header>
@@ -46,9 +55,24 @@
                 </div>
             </div>
             <div class="header-share__right">
+                <!-- SIN CONTRASEÑA -->
                 <form class="right__form" th:action="@{/users/download/{id}(id=${archivo.id})}">
                     <input type="submit" class="right__download" value="Descargar">
                 </form>
+                <!--
+                CON CONTRASEÑA
+                <form class="right__key right__form" th:action="@{/users/download/{id}(id=${archivo.id})}">
+                    <input type="submit" class="right__download" value="Descargar">
+                </form>
+                <form class="right__form--password">
+                    <h1 class="form--password__title">¡Se requiere una contraseña!</h1>
+                    <input type="password" class="form--password__content" />
+                    <input type="submit" class="form--password__submit" value="Validar">
+                    <div class="form--password__exit">
+                        <i class="password__exit--salida fa-solid fa-xmark"></i>
+                    </div>
+                </form>
+                -->
             </div>
         </div>
         <div class="share__content-share">
@@ -69,7 +93,7 @@
                     </div>
                     <div class="content__size">
                         <h2 class="size__title">Uploaded: </h2>
-                        <span class="size__content" th:text="${archivo.fechaDeSubida}"></span>
+                        <span class="size__content" th:text="${#dates.format(archivo.fechaDeSubida, 'yyyy-MM-dd HH:mm:ss')}"></span>
                     </div>
                 </div>
                 <div class="content-share-left__footer">

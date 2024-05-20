@@ -374,7 +374,7 @@
                             <div class="value__title" th:text="${archivo.nombre}" />
                             <div class="value__info">
                                 <p class="info__size" th:text="${archivo.fileSizeMB}" />
-                                <p class="info__date" th:text="${archivo.fechaDeSubida}" />
+                                <p class="info__date" th:text="${#dates.format(archivo.fechaDeSubida, 'yyyy-MM-dd HH:mm:ss')}" />
                             </div>
     
                             <div class="value__information">

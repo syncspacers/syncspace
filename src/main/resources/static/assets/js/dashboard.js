@@ -368,6 +368,7 @@ window.addEventListener('load', () => {
         formulario_upload.style.display = 'none';
     });
 
+
     Array.from(archivos).forEach(function(valor, indice) {
         try {
             // boton de exit
@@ -406,6 +407,21 @@ window.addEventListener('load', () => {
             // checkbutton
             let checkbutton__public = valor.querySelector('.checkbutton__public');
             let checkbutton__private = valor.querySelector('.checkbutton__private');
+            // comentario y cambiar el nombre
+            let comentario_result = valor.querySelector('.comentario__element');
+            // download file button
+            let download_file = valor.querySelector('.information__download');
+            comentario_result.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+            value__information.addEventListener('click', (e) => {
+                console.log('clic en el formulario');
+            });
+            let cambiar_nombre = valor.querySelector('.form__name');
+            cambiar_nombre.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
             checkbutton__public.addEventListener('click', (e) => {
                 e.stopPropagation();
             })
@@ -437,7 +453,6 @@ window.addEventListener('load', () => {
             })
             // FIN DEL COPY DE LOS ENLACES
             no_borrar.addEventListener('click', (e) => {
-                console.log("CLICKED");
                 borrar_ventana.style.display = 'none';
                 e.preventDefault();
                 e.stopPropagation();
@@ -446,7 +461,6 @@ window.addEventListener('load', () => {
                 e.stopPropagation();
             })
             boton_borrar.addEventListener('click', (e) => {
-                console.log("BORRAR ARCHIVO");
                 if (borrar_ventana.style.display == '' || borrar_ventana.style.display == 'none') {
                     // equivale a darle al exit
                     rename__form.style.display = 'none';
@@ -470,7 +484,19 @@ window.addEventListener('load', () => {
                 // Abrimos el publico
                 form_publico.style.display = 'flex';
                 e.stopPropagation();
-            }); 
+            });
+
+
+            value__information.addEventListener('click', (e) => {
+                console.log(e.target);
+                if (!e.target.classList.contains('information__download')) {
+                    // Si no tiene la clase "information__download", detén la propagación del evento
+                    e.stopPropagation();
+                }
+
+            });
+
+
             boton_privado.addEventListener('click', (e) => {
                 // Cerramos los posibles forms
                 form_friends.style.display = 'none';
@@ -553,23 +579,21 @@ window.addEventListener('load', () => {
                     comentario_form.style.display = 'none';
                 }
                 e.stopPropagation();
-            })
-
-            let button_back = document.querySelector('.content__back');
-            let carpetaPadre = button_back.getAttribute("carpetaPadre");
-            let carpetaRaiz = button_back.getAttribute("carpetaRaiz");
-            if (carpetaRaiz == "false") {
-                button_back.addEventListener('click', (e) => {
-                    document.cookie = "folderID=" + carpetaPadre;
-                    location.reload();
-                });
-            } else {
-                button_back.style.display = 'none'
-            }
-
+            });
         } catch (e) {
             console.log(e);
         }
-        
-    })
+    });
+
+    let button_back = document.querySelector('.content__back');
+    let carpetaPadre = button_back.getAttribute("carpetaPadre");
+    let carpetaRaiz = button_back.getAttribute("carpetaRaiz");
+    if (carpetaRaiz == "false") {
+        button_back.addEventListener('click', (e) => {
+            document.cookie = "folderID=" + carpetaPadre;
+            location.reload();
+        });
+    } else {
+        button_back.style.display = 'none'
+    }
 });

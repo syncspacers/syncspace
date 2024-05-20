@@ -98,6 +98,9 @@ body {
     cursor: pointer;
     transition: all 300ms ease-in-out;
     position: relative;
+    color: var(--color-white);
+    font-size: 1.9rem;
+    font-family: Arial, Helvetica, sans-serif;
 }
 .upgrade__button:hover::before {
     content: "";
@@ -789,7 +792,7 @@ body {
 .signup_login__order,
 .signup_login__lupa,
 .signup_login__add-folder {
-    color: var(--color-pink);
+    color: #ff89a9;
     height: 100%;
     flex-basis: 18%;
     font-size: 1.8rem;
@@ -800,6 +803,7 @@ body {
     cursor: pointer;
     transition: all 300ms ease-in-out;
     position: relative;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .signup_login__add-folder {
@@ -823,11 +827,11 @@ body {
     width: 20rem;
     bottom: -12rem;
     right: -2rem;
-    z-index: 8;
+    z-index: 9;
 }
 
 .form-folder__header {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     text-align: center;
     color: var(--color-white);
 }
@@ -954,6 +958,7 @@ body {
     gap: 0.5rem;
     cursor: pointer;
     transition: all 300ms ease-in-out;
+    font-family: Arial, Helvetica, sans-serif
 }
 
 .right__folders:hover,
@@ -1016,7 +1021,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    color: var(--color-black);
+    color: #777070;
     font-size: 1.5rem;
     width: 100%;
     margin-left: 1rem;
@@ -1141,12 +1146,14 @@ body {
     font-weight: bold;
     color: var(--color-black);
     font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .info__size,
 .info__date {
     text-align: center;
     font-size: 1.3rem;
+    font-family: Arial, Helvetica, sans-serif;
     color: var(--color-gray);
 }
 
@@ -1466,6 +1473,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.3rem;
 }
 
 .filtros__name:hover {
@@ -1477,12 +1485,9 @@ body {
 .signup_login__order:hover > .filter__filtros--order {
     display: flex;
     flex-grow: 1;
+    z-index: 9;
 }
 
-
-.filtros__name {
-    font-size: 1.5rem;
-}
 
 .share__types--active {
     display: none;
@@ -1565,6 +1570,7 @@ body {
     width: 45rem;
     height: 35rem;
     border: 1px solid rgb(219 219 219);
+    z-index: 10;
 }
 
 .upload__top {
@@ -1604,6 +1610,13 @@ body {
     height: 80%;
     width: 50%;
     border: 0.3rem dashed rgb(183, 178, 178);
+}
+
+.header__link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .upload__file {
@@ -1694,17 +1707,20 @@ body {
 
 .share__header-share {
     display: flex;
+    justify-content: center;
     width: 100%;
-    flex-grow: 1;
 }
 
 .header-share__left,
-.header-share__center,
 .header-share__right {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-basis: 35%;
+    flex-basis: 47%;
+}
+
+.header-share__center {
+    flex-basis: 10%;
 }
 
 .header-share__icon {
@@ -1753,13 +1769,15 @@ body {
     height: 5rem;
     width: 15rem;
     background: var(--color-pink);
-    color: var(--color-black);
+    color: var(--color-white);
+    font-size: 1.9rem;
     border: none;
     text-transform: uppercase;
     font-weight: bold;
     cursor: pointer;
     transition: all 300ms ease-in-out;
     border: 1px solid rgb(183, 178, 178);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .header-share__icon--redes {
@@ -1829,6 +1847,7 @@ body {
     color: var(--color-black);
     font-size: 2rem;
     font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .content__size {
@@ -1843,6 +1862,7 @@ body {
 .size__content {
     width: 100%;
     height: 100%;
+    font-size: 1.3rem;
 }
 
 .size__title {
@@ -1861,6 +1881,7 @@ body {
     font-size: 2rem;
     font-weight: bold;
     margin-top: 3rem;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 
@@ -1883,11 +1904,14 @@ body {
     border: 1px solid rgb(183, 178, 178);
     border-radius: 1rem;
     box-shadow: 1px 1px 2px black;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .content-share-left__content {
     width: 28%;
     margin: auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Botón para volver atrás */
@@ -1896,8 +1920,8 @@ body {
     position: absolute;
     top: 2rem;
     left: 2rem;
-    width: 5rem;
-    height: 2rem;
+    width: 8rem;
+    height: 4rem;
     background-color: #b8acf5;
     color: var(--color-white);
     border-radius: 1rem;
@@ -1907,4 +1931,55 @@ body {
 
 .content__back:hover {
     background-color: #c1b8ed;
+}
+
+.back__item {
+    font-size: 2rem;
+}
+
+.upload__title {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Estilos del formulario para introducir la contraseña */
+
+.right__form--password {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background: rgb(236, 131, 148);
+    height: 10rem;
+    width: 23rem;
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 1rem;
+}
+
+.form--password__title {
+    color: var(--color-white);
+    font-size: 1.5rem;
+}
+
+.form--password__submit {
+    width: 9rem;
+    height: 3rem;
+    background: #e695ff;
+    color: white;
+}
+
+.form--password__content {
+    width: 15rem;
+    background: var(--color-white);
+    outline: none;
+}
+
+.password__exit--salida {
+    color: var(--color-white);
+    font-size: 1.5rem;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    cursor: pointer;
 }
