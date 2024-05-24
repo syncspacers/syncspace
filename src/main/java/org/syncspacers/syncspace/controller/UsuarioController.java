@@ -32,7 +32,6 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UsuarioController {
 
     private static final String TOKEN_COOKIE = "sessionToken";
-    private static final String FOLDER_COOKIE = "folderID";
 
     @Autowired
     private ArchivoService archivoService;
@@ -86,6 +85,12 @@ public class UsuarioController {
                 model.addAttribute("carpetaActual", "");
             } else {
                 carpeta = carpetaData.get();
+
+                // Comprobación de seguridad
+                if (!carpeta.getUsuario().getEmail().equals(usuario.getEmail())) {
+                    return "redirect:/dashboard";
+                }
+                //
 
                 if (carpeta.isEnPapelera()) {
                     return "redirect:/dashboard/papelera";
@@ -166,6 +171,13 @@ public class UsuarioController {
             archivo.setUsuario(usuario);
             if (carpetaData.isPresent()) {
                 Carpeta carpeta = carpetaData.get();
+
+                // Comprobación de seguridad
+                if (!carpeta.getUsuario().getEmail().equals(usuario.getEmail())) {
+                    return "redirect:/dashboard";
+                }
+                //
+
                 archivo.setCarpeta(carpeta);
             }
             archivoService.save(archivo);
@@ -179,11 +191,21 @@ public class UsuarioController {
     }
 
     @RequestMapping("/preview/{fileId}")
-    public String previewFile(@PathVariable Long fileId, Model model) {
+    public String previewFile(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable Long fileId, Model model) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Archivo> archivoData = archivoService.findById(fileId);
 
-        if (archivoData.isPresent()) {
+        if (archivoData.isPresent() && usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
             String extensionArchivo = getFileExtension(archivo.getNombre());
 
             model.addAttribute("archivo", archivo);
@@ -196,13 +218,23 @@ public class UsuarioController {
     }
 
     @RequestMapping("/users/download/{fileId}")
-    public ResponseEntity<byte[]> downloadFile(@PathVariable Long fileId) {
+    public ResponseEntity<byte[]> downloadFile(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable Long fileId) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Archivo> archivoData = archivoService.findById(fileId);
 
         System.out.println(String.format("fileId: %d", archivoData.get().getId()));
 
-        if (archivoData.isPresent()) {
+        if (archivoData.isPresent() && usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return ResponseEntity.badRequest().build();
+            }
+            //
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDispositionFormData("attachment", archivo.getNombre());
@@ -229,6 +261,13 @@ public class UsuarioController {
             carpeta.setUsuario(usuario);
             if (carpetaData.isPresent()) {
                 carpetaPadre = carpetaData.get();
+
+                // Comprobación de seguridad
+                if (!carpetaPadre.getUsuario().getEmail().equals(usuario.getEmail())) {
+                    return "redirect:/dashboard";
+                }
+                //
+
                 carpeta.setCarpetaPadre(carpetaPadre);
             }
 
@@ -243,13 +282,23 @@ public class UsuarioController {
     }
 
     @PostMapping("/users/renamefile/{fileID}")
-    public String renameFile(@PathVariable("fileID") Long fileID,
+    public String renameFile(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable("fileID") Long fileID,
             @RequestParam("nuevoNombre") String nuevoNombre) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Archivo> archivoData = archivoService.findById(fileID);
         Carpeta carpetaPadre = null;
 
-        if (archivoData.isPresent()) {
+        if (archivoData.isPresent() && usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
             carpetaPadre = archivo.getCarpeta();
             archivo.setNombre(nuevoNombre);
             archivoService.save(archivo);
@@ -263,13 +312,23 @@ public class UsuarioController {
     }
 
     @PostMapping("/users/renamefolder/{folderID}")
-    public String renameFolder(@PathVariable("folderID") Long folderID,
+    public String renameFolder(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable("folderID") Long folderID,
             @RequestParam("nuevoNombre") String nuevoNombre) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
         Carpeta carpetaPadre = null;
 
-        if (carpetaData.isPresent()) {
+        if (carpetaData.isPresent() && usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Carpeta carpeta = carpetaData.get();
+
+            // Comprobación de seguridad
+            if (!carpeta.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
             carpetaPadre = carpeta.getCarpetaPadre();
             carpeta.setNombre(nuevoNombre);
             carpetaService.save(carpeta);
@@ -283,14 +342,23 @@ public class UsuarioController {
     }
 
     @PostMapping("/users/deletefile/{fileID}")
-    public String deleteFile(@PathVariable("fileID") Long fileID) {
+    public String deleteFile(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable("fileID") Long fileID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Archivo> archivoData = archivoService.findById(fileID);
         Carpeta carpetaPadre = null;
 
-        if (archivoData.isPresent()) {
+        if (archivoData.isPresent() && usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Archivo archivo = archivoData.get();
-            carpetaPadre = archivo.getCarpeta();
 
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
+            carpetaPadre = archivo.getCarpeta();
             if (archivo.isEnPapelera()) {
                 archivoService.delete(archivo);
                 return "redirect:/dashboard/papelera";
@@ -309,14 +377,23 @@ public class UsuarioController {
     }
 
     @PostMapping("/users/deletefolder/{folderID}")
-    public String deleteFolder(@PathVariable("folderID") Long folderID) {
+    public String deleteFolder(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable("folderID") Long folderID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
         Carpeta carpetaPadre = null;
 
-        if (carpetaData.isPresent()) {
+        if (carpetaData.isPresent() && usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Carpeta carpeta = carpetaData.get();
-            carpetaPadre = carpeta.getCarpetaPadre();
 
+            // Comprobación de seguridad
+            if (!carpeta.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
+            carpetaPadre = carpeta.getCarpetaPadre();
             if (carpeta.isEnPapelera()) {
                 carpetaService.delete(carpeta);
                 return "redirect:/dashboard/papelera";
@@ -335,11 +412,20 @@ public class UsuarioController {
     }
 
     @RequestMapping("/users/restorefile/{fileID}")
-    public String restoreFile(@PathVariable("fileID") Long fileID) {
+    public String restoreFile(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable("fileID") Long fileID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Archivo> archivoData = archivoService.findById(fileID);
 
-        if (archivoData.isPresent()) {
+        if (archivoData.isPresent() && usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
 
             archivo.setEnPapelera(false);
             archivo.setCarpeta(null);
@@ -350,11 +436,21 @@ public class UsuarioController {
     }
 
     @RequestMapping("/users/restorefolder/{folderID}")
-    public String restoreFolder(@PathVariable("folderID") Long folderID) {
+    public String restoreFolder(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable("folderID") Long folderID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
 
         if (carpetaData.isPresent()) {
+            Usuario usuario = usuarioData.get();
             Carpeta carpeta = carpetaData.get();
+
+            // Comprobación de seguridad
+            if (!carpeta.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
             carpeta.setEnPapelera(false);
             carpetaService.save(carpeta);
         }
