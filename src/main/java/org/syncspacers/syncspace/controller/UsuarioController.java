@@ -1,9 +1,11 @@
 package org.syncspacers.syncspace.controller;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.syncspacers.syncspace.model.Archivo;
 import org.syncspacers.syncspace.model.Carpeta;
 import org.syncspacers.syncspace.model.Usuario;
@@ -26,6 +29,7 @@ import org.syncspacers.syncspace.service.CarpetaService;
 import org.syncspacers.syncspace.service.UsuarioService;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -57,6 +61,7 @@ public class UsuarioController {
     public String dashboard(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
             @PathVariable(required = false) Long folderID,
             @PathVariable(required = false) String seccion,
+            HttpServletRequest request,
             Model model) {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Carpeta> carpetaData = carpetaService.findById(folderID);
@@ -116,6 +121,7 @@ public class UsuarioController {
             model.addAttribute("carpetaPadre", carpetaPadre);
             model.addAttribute("carpetaRaiz", !carpetaData.isPresent());
             model.addAttribute("enPapalera", papelera);
+            model.addAttribute("serverURL", ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString());
             return "usuario/dashboard";
         } else {
             return "redirect:/login";
@@ -207,9 +213,9 @@ public class UsuarioController {
             //
 
             String extensionArchivo = getFileExtension(archivo.getNombre());
-
             model.addAttribute("archivo", archivo);
             model.addAttribute("extensionArchivo", extensionArchivo);
+            model.addAttribute("archivoSinEnlace", true);
 
             return "usuario/share";
         }
@@ -223,19 +229,18 @@ public class UsuarioController {
         Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
         Optional<Archivo> archivoData = archivoService.findById(fileId);
 
-        System.out.println(String.format("fileId: %d", archivoData.get().getId()));
-
         if (archivoData.isPresent() && usuarioData.isPresent()) {
             Usuario usuario = usuarioData.get();
             Archivo archivo = archivoData.get();
+            HttpHeaders headers = new HttpHeaders();
 
             // Comprobación de seguridad
             if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
-                return ResponseEntity.badRequest().build();
+                headers.setLocation(URI.create("/dashboard"));
+                return new ResponseEntity<byte[]>(headers, HttpStatus.FOUND);                
             }
             //
 
-            HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             headers.setContentDispositionFormData("attachment", archivo.getNombre());
 
@@ -456,6 +461,183 @@ public class UsuarioController {
         }
         
         return "redirect:/dashboard/papelera";
+    }
+
+    @RequestMapping("/share/public/{publicID}")
+    public String previewPublicShare(@PathVariable Long publicID, Model model) {
+        Optional<Archivo> archivoData = archivoService.findByPublicId(publicID);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+
+            String extensionArchivo = getFileExtension(archivo.getNombre());
+            model.addAttribute("archivo", archivo);
+            model.addAttribute("extensionArchivo", extensionArchivo);
+            model.addAttribute("archivoPublico", true);
+
+            return "usuario/share";
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/share/public/{fileID}")
+    public String sharePublic(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable Long fileID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+        
+        if (usuarioData.isPresent() && archivoData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+            Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
+            archivo.setPublicID(Math.abs(new Random().nextLong()));
+            archivoService.save(archivo);
+
+            return "redirect:/share/public/" + archivo.getPublicID();
+        }
+        
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/unshare/public/{fileID}")
+    public String unsharePublic(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable Long fileID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+
+        if (usuarioData.isPresent() && archivoData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+            Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
+            archivo.setPublicID(null);
+            archivoService.save(archivo);
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    @RequestMapping("/users/download/public/{publicID}")
+    public ResponseEntity<byte[]> downloadPublicFile(@PathVariable Long publicID) {
+        Optional<Archivo> archivoData = archivoService.findByPublicId(publicID);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", archivo.getNombre());
+
+            return new ResponseEntity<>(archivo.getContenido(), headers, HttpStatus.OK);
+        }
+
+        return null;
+    }
+
+    @RequestMapping("/share/private/{passwordID}")
+    public String previewPasswordShare(@PathVariable Long passwordID, Model model) {
+        Optional<Archivo> archivoData = archivoService.findByPasswordId(passwordID);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+
+            String extensionArchivo = getFileExtension(archivo.getNombre());
+            model.addAttribute("archivo", archivo);
+            model.addAttribute("extensionArchivo", extensionArchivo);
+            model.addAttribute("archivoPrivado", true);
+
+            return "usuario/share";
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/share/private/{fileID}")
+    public String sharePassword(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @RequestParam("filePassword") String filePassword,
+            @PathVariable Long fileID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+        
+        if (usuarioData.isPresent() && archivoData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+            Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
+            archivo.setPasswordID(Math.abs(new Random().nextLong()));
+            archivo.setPassword(filePassword);
+            archivoService.save(archivo);
+
+            return "redirect:/share/private/" + archivo.getPasswordID();
+        }
+        
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/unshare/private/{fileID}")
+    public String unsharePassword(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @PathVariable Long fileID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+
+        if (usuarioData.isPresent() && archivoData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+            Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
+            archivo.setPasswordID(null);
+            archivo.setPassword(null);
+            archivoService.save(archivo);
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/users/download/private/{passwordID}")
+    public ResponseEntity<?> downloadPasswordFile(@RequestParam("filePassword") String filePassword,
+            @PathVariable Long passwordID) {
+        Optional<Archivo> archivoData = archivoService.findByPasswordId(passwordID);
+
+        if (archivoData.isPresent()) {
+            Archivo archivo = archivoData.get();
+            HttpHeaders headers = new HttpHeaders();
+
+            // Comprobación de seguridad
+            if (!filePassword.equals(archivo.getPassword())) {
+                headers.setLocation(URI.create("/share/private/" + passwordID));
+                return new ResponseEntity<byte[]>(headers, HttpStatus.FOUND);
+            }
+            //
+
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", archivo.getNombre());
+
+            return new ResponseEntity<byte[]>(archivo.getContenido(), headers, HttpStatus.OK);
+        }
+
+        return null;
     }
 
     private Archivo generateArchivoFromFile(MultipartFile file) {

@@ -2,6 +2,7 @@ package org.syncspacers.syncspace.model;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -32,6 +33,13 @@ public class Archivo {
 
     private String nombre;
     private String comentario;
+
+    @Column(unique = true)
+    private Long publicID;
+
+    @Column(unique = true)
+    private Long passwordID;
+    private String password;
 
     /**
      * @return True si el archivo está en la papelera
@@ -146,6 +154,31 @@ public class Archivo {
         this.contenido = contenido;
         this.filesize = contenido.length;
         this.fileSizeMB = String.format("%.2fMB", bytesToMB(this.filesize));
+    }
+
+    public Long getPublicID() {
+        return publicID;
+    }
+
+    public void setPublicID(Long publicID) {
+        this.publicID = publicID;
+    }
+
+
+    public Long getPasswordID() {
+        return passwordID;
+    }
+
+    public void setPasswordID(Long passwordID) {
+        this.passwordID = passwordID;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**

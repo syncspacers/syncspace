@@ -433,15 +433,19 @@
                                     </div>
     
                                     <div class="types__enlace">
-                                        <input class="enlace__public" type="text" value="https://syncspace.com/download/publico123">
+                                        <div th:if="${archivo.publicID} != null">
+                                            <input class="enlace__public" type="text" th:value="@{${serverURL} + '/share/public/' + ${archivo.publicID}}">
+                                        </div>
                                     </div>
     
-                                    <button class="types__button">Crear enlace</button>
-                                    <button class="types__button">Borrar enlace</button>
-    
-                                    <div class="enlace__config">
-                                        <input class="checkbutton__public" id="enlace_temporal" name="enlace__temporal" type="checkbox">
-                                        <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
+                                    <form method="POST" enctype="multipart/form-data" th:action="@{'/users/share/public/' + ${archivo.id}}">
+                                        <input type="submit" class="types__button types__modify__link" value="Crear enlace"></input>
+                                    </form>
+
+                                    <div th:if="${archivo.publicID} != null">
+                                        <form method="POST" enctype="multipart/form-data" th:action="@{'/users/unshare/public/' + ${archivo.id}}">
+                                            <input type="submit" class="types__button types__modify__link" value="Borrar enlace"></input>
+                                        </form>
                                     </div>
     
                                     <span class="types__copied">
@@ -455,23 +459,29 @@
                                     </div>
     
                                     <div class="types__enlace__private">
-                                        <input class="enlace__privado" type="text" value="https://syncspace.com/download/privado123">
+                                        <div th:if="${archivo.passwordID} != null">
+                                            <input class="enlace__privado" type="text" th:value="@{${serverURL} + '/share/private/' + ${archivo.passwordID}}">
+                                        </div>
                                     </div>
+        
+                                    <form method="POST" enctype="multipart/form-data" th:action="@{'/users/share/private/' + ${archivo.id}}">
+                                        <div class="types__enlace--download">
+                                            CONTRASEÑA
+                                        </div>
+
+                                        <div class="types__enlace">
+                                            <input class="enlace__password" type="text" name="filePassword" placeholder="Inserta una contraseña">
+                                        </div>
     
-                                    <div class="types__enlace--download">
-                                        CONTRASEÑA
-                                    </div>
-    
-                                    <div class="types__enlace">
-                                        <input class="enlace__password" type="text" placeholder="Inserta una contraseña">
-                                    </div>
-    
-                                    <button class="types__button">Crear enlace</button>
-                                    <button class="types__button">Borrar enlace</button>
-    
-                                    <div class="enlace__config">
-                                        <input class="checkbutton__private checkbutton__pulsado" id="enlace_temporal" name="enlace__temporal" type="checkbox">
-                                        <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
+                                        <div class="types__enlace">
+                                            <input type="submit" class="types__button types__modify__link" value="Crear enlace"></input>
+                                        </div>
+                                    </form>
+
+                                    <div th:if="${archivo.passwordID} != null">
+                                        <form method="POST" enctype="multipart/form-data" th:action="@{'/users/unshare/private/' + ${archivo.id}}">
+                                            <input type="submit" class="types__button types__modify__link" value="Borrar enlace"></input>
+                                        </form>
                                     </div>
     
                                     <span class="types__copied">

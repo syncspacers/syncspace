@@ -55,24 +55,32 @@
                 </div>
             </div>
             <div class="header-share__right">
-                <!-- SIN CONTRASEÑA -->
-                <form class="right__form" th:action="@{/users/download/{id}(id=${archivo.id})}">
-                    <input type="submit" class="right__download" value="Descargar">
-                </form>
-                <!--
-                CON CONTRASEÑA
-                <form class="right__key right__form" th:action="@{/users/download/{id}(id=${archivo.id})}">
-                    <input type="submit" class="right__download" value="Descargar">
-                </form>
-                <form class="right__form--password">
-                    <h1 class="form--password__title">¡Se requiere una contraseña!</h1>
-                    <input type="password" class="form--password__content" />
-                    <input type="submit" class="form--password__submit" value="Validar">
-                    <div class="form--password__exit">
-                        <i class="password__exit--salida fa-solid fa-xmark"></i>
-                    </div>
-                </form>
-                -->
+                <!-- Archivo sin enlace -->
+                <div th:if="${archivoSinEnlace} == true">
+                    <form class="right__form" th:action="@{/users/download/{id}(id=${archivo.id})}">
+                        <input type="submit" class="right__download" value="Descargar">
+                    </form>
+                </div>
+                <!-- Archivo con enlace publico -->
+                <div th:if="${archivoPublico} == true">
+                    <form class="right__form" th:action="@{/users/download/public/{id}(id=${archivo.publicID})}">
+                        <input type="submit" class="right__download" value="Descargar">
+                    </form>
+                </div>
+                <!-- Archivo con contraseña -->
+                <div th:if="${archivoPrivado} == true">
+                    <form class="right__key right__form">
+                        <input type="submit" class="right__download" value="Descargar">
+                    </form>
+                    <form method="POST" enctype="multipart/form-data" class="right__form--password" th:action="@{/users/download/private/{id}(id=${archivo.passwordID})}">
+                        <h1 class="form--password__title">¡Se requiere una contraseña!</h1>
+                        <input type="password" name="filePassword" class="form--password__content" />
+                        <input type="submit" class="form--password__submit" value="Validar">
+                        <div class="form--password__exit">
+                            <i class="password__exit--salida fa-solid fa-xmark"></i>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="share__content-share">

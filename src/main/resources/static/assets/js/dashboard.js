@@ -403,9 +403,6 @@ window.addEventListener('load', () => {
             let publico = valor.querySelector('.enlace__public');
             let privado = valor.querySelector('.enlace__privado');
             let friends = valor.querySelector('.enlace__friends');
-            // checkbutton
-            let checkbutton__public = valor.querySelector('.checkbutton__public');
-            let checkbutton__private = valor.querySelector('.checkbutton__private');
             // comentario y cambiar el nombre
             let comentario_result = valor.querySelector('.comentario__element');
             // download file button
@@ -427,12 +424,6 @@ window.addEventListener('load', () => {
                 e.stopPropagation();
             });
 
-            checkbutton__public.addEventListener('click', (e) => {
-                e.stopPropagation();
-            })
-            checkbutton__private.addEventListener('click', (e) => {
-                e.stopPropagation();
-            })
             enlace__publico.addEventListener('click', (e) => {
                 // Copia el contenido del input
                 console.log('clic en el enlace public');

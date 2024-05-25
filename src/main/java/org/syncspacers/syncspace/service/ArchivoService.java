@@ -36,4 +36,14 @@ public class ArchivoService {
         if (id == null) return Optional.empty();
         return archivoRepository.findById(id);
     }
+
+    public Optional<Archivo> findByPublicId(Long publicID) {
+        if (publicID == null) return Optional.empty();
+        return archivoRepository.findByPublicId(publicID);
+    }
+
+    public Optional<Archivo> findByPasswordId(Long passwordId) {
+        if (passwordId == null) return Optional.empty();
+        return archivoRepository.findByPasswordId(passwordId);
+    }
 }
