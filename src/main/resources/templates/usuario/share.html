@@ -104,13 +104,11 @@
                         <span class="size__content" th:text="${#dates.format(archivo.fechaDeSubida, 'yyyy-MM-dd HH:mm:ss')}"></span>
                     </div>
                 </div>
-                <div class="content-share-left__footer">
+                <div class="content-share-left__footer" th:if="${archivo.comentario} != null">
                     <div class="footer__share">
                         About this document
                     </div>
-                    <div class="footer__content__share">
-                        Este archivo contiene fotos acerca de un viaje a Santa Cruz de Tenerife.
-                    </div>
+                    <div class="footer__content__share" th:text="${archivo.comentario}"></div>
                 </div>
             </div>
             <div class="content-share-right">

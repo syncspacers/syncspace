@@ -197,16 +197,15 @@
                             </div>
                             <div class="value__title" th:text="${carpeta.nombre}" />
                             <div class="value__info">
-                                <p class="info__size">81,7 MB</p>
-                                <p class="info__date">2025-01-05 12:47:39</p>
+                                <p class="info__date" th:text="${#dates.format(carpeta.fechaDeSubida, 'yyyy-MM-dd HH:mm:ss')}"></p>
                             </div>
 
                             <div class="value__information">
-                                <div class="information__share">
+                                <div class="information__share" style="display: none">
                                     <i class="info-item fa-solid fa-share"></i>
                                     COMPARTIR
                                 </div>
-                                <div class="information__download">
+                                <div class="information__download" style="display: none">
                                     <i class="info-item fa-solid fa-download"></i>
                                     DESCARGAR
                                 </div>
@@ -214,7 +213,7 @@
                                     <i class="info-item fa-solid fa-pen"></i>
                                     CAMBIAR NOMBRE
                                 </div>
-                                <div class="information__comentario">
+                                <div class="information__comentario" style="display: none">
                                     <i class="info-item fa-solid fa-comment"></i>
                                     COMENTARIO
                                 </div>
@@ -237,9 +236,6 @@
                                     </div>
                                     <div class="share__private">
                                         PRIVADO
-                                    </div>
-                                    <div class="share__friends">
-                                        CON AMIGOS
                                     </div>
                                 </div>
 
@@ -294,63 +290,6 @@
                                         ¡Enlace copiado!
                                     </span>
                                 </div>
-
-                                <div class="share__types--friends">
-                                    <div class="types__enlace--publico">
-                                        ENLACE CON AMIGOS
-                                    </div>
-
-                                    <div class="types__enlace__friends">
-                                        <input class="enlace__friends" type="text" value="https://syncspace.com/download/friends123">
-                                    </div>
-
-                                    <button class="types__button">Crear enlace</button>
-
-                                    <button class="types__button">Borrar enlace</button>
-
-                                    <div class="types__enlace--download">
-                                        AÑADIR AMIGOS
-                                    </div>
-
-                                    <div class="types__enlace">
-                                        <input class="enlace__password" type="text" placeholder="Inserta un email">
-                                    </div>
-
-                                    <ul class="types__amigos">
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            sergioluisv88@gmail.com
-                                        </li>
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            luisemiliovas@gmail.com
-                                        </li>
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            testing@gmail.com
-                                        </li>
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            donjuanarbol@gmail.com
-                                        </li>
-                                    </ul>
-
-                                    <button class="types__button">Añadir</button>
-
-                                    <span class="types__copied">
-                                        ¡Enlace copiado!
-                                    </span>
-                                </div>
-                                
-
                                 <div class="information__exit">
                                     <i class="fa-solid fa-xmark"></i>
                                 </div>
@@ -408,9 +347,8 @@
                                     <input class="form__submit" type="submit" value="ENVIAR">
                                 </form>
     
-                                <form action="" class="information__form__comentario">
-                                    <input class="comentario__element" type="text" placeholder="Inserta una nota"> 
-    
+                                <form method="POST" enctype="multipart/form-data" th:action="@{'/users/commentfile/' + ${archivo.id}}" class="information__form__comentario">
+                                    <input class="comentario__element" type="text" name="fileComment" placeholder="Inserta una nota" th:value="${archivo.comentario}">
     
                                     <input class="form__submit" type="submit" value="ENVIAR">
                                 </form>
@@ -421,9 +359,6 @@
                                     </div>
                                     <div class="share__private">
                                         PRIVADO
-                                    </div>
-                                    <div class="share__friends">
-                                        CON AMIGOS
                                     </div>
                                 </div>
     
@@ -488,63 +423,7 @@
                                         ¡Enlace copiado!
                                     </span>
                                 </div>
-    
-                                <div class="share__types--friends">
-                                    <div class="types__enlace--publico">
-                                        ENLACE CON AMIGOS
-                                    </div>
-    
-                                    <div class="types__enlace__friends">
-                                        <input class="enlace__friends" type="text" value="https://syncspace.com/download/friends123">
-                                    </div>
-    
-                                    <button class="types__button">Crear enlace</button>
-    
-                                    <button class="types__button">Borrar enlace</button>
-    
-                                    <div class="types__enlace--download">
-                                        AÑADIR AMIGOS
-                                    </div>
-    
-                                    <div class="types__enlace">
-                                        <input class="enlace__password" type="text" placeholder="Inserta un email">
-                                    </div>
-    
-                                    <ul class="types__amigos">
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            sergioluisv88@gmail.com
-                                        </li>
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            luisemiliovas@gmail.com
-                                        </li>
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            testing@gmail.com
-                                        </li>
-                                        <li class="amigos__amigo">
-                                            <div class="amigo__delete">
-                                                <i class="amigo__delete fa-solid fa-minus"></i>
-                                            </div>
-                                            donjuanarbol@gmail.com
-                                        </li>
-                                    </ul>
-    
-                                    <button class="types__button">Añadir</button>
-    
-                                    <span class="types__copied">
-                                        ¡Enlace copiado!
-                                    </span>
-                                </div>
-                                
-    
+
                                 <div class="information__exit">
                                     <i class="fa-solid fa-xmark"></i>
                                 </div>

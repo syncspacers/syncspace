@@ -135,7 +135,13 @@ public class UsuarioController {
     }
 
     @RequestMapping("/login")
-    public String login(Model model) {
+    public String login(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            Model model) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        if (usuarioData.isPresent()) {
+            return "redirect:/dashboard";
+        }
+
         model.addAttribute("usuario", new Usuario());
         return "usuario/login";
     }
@@ -205,6 +211,10 @@ public class UsuarioController {
         if (archivoData.isPresent() && usuarioData.isPresent()) {
             Usuario usuario = usuarioData.get();
             Archivo archivo = archivoData.get();
+
+            if (archivo.isEnPapelera()) {
+                return "redirect:/dashboard/papelera";
+            }
 
             // Comprobación de seguridad
             if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
@@ -470,6 +480,10 @@ public class UsuarioController {
         if (archivoData.isPresent()) {
             Archivo archivo = archivoData.get();
 
+            if (archivo.isEnPapelera()) {
+                return "redirect:/dashboard/papelera";
+            }
+
             String extensionArchivo = getFileExtension(archivo.getNombre());
             model.addAttribute("archivo", archivo);
             model.addAttribute("extensionArchivo", extensionArchivo);
@@ -552,6 +566,10 @@ public class UsuarioController {
 
         if (archivoData.isPresent()) {
             Archivo archivo = archivoData.get();
+
+            if (archivo.isEnPapelera()) {
+                return "redirect:/dashboard/papelera";
+            }
 
             String extensionArchivo = getFileExtension(archivo.getNombre());
             model.addAttribute("archivo", archivo);
@@ -638,6 +656,34 @@ public class UsuarioController {
         }
 
         return null;
+    }
+
+    @PostMapping("/users/commentfile/{fileID}")
+    public String setFileComment(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @RequestParam String fileComment,
+            @PathVariable Long fileID) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+        Optional<Archivo> archivoData = archivoService.findById(fileID);
+
+        if (usuarioData.isPresent() && archivoData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+            Archivo archivo = archivoData.get();
+
+            // Comprobación de seguridad
+            if (!archivo.getUsuario().getEmail().equals(usuario.getEmail())) {
+                return "redirect:/dashboard";
+            }
+            //
+
+            if (fileComment.isEmpty()) {
+                archivo.setComentario(null);
+            } else {
+                archivo.setComentario(fileComment);
+            }
+            archivoService.save(archivo);
+        }
+
+        return "redirect:/dashboard";
     }
 
     private Archivo generateArchivoFromFile(MultipartFile file) {

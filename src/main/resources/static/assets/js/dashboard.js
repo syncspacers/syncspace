@@ -386,11 +386,9 @@ window.addEventListener('load', () => {
             // Botones publico privado y con amigos
             let boton_publico = valor.querySelector('.share__public');
             let boton_privado = valor.querySelector('.share__private');
-            let boton_friends = valor.querySelector('.share__friends');
 
             let form_publico = valor.querySelector('.share__types--active');
             let form_privado = valor.querySelector('.share__types--private');
-            let form_friends = valor.querySelector('.share__types--friends');
             // Boton de borrar archivo
             let boton_borrar = valor.querySelector('.trash-item');
             let borrar_ventana = valor.querySelector('.value__trash--form');
@@ -399,10 +397,8 @@ window.addEventListener('load', () => {
             // que lo notifique
             let enlace__publico = valor.querySelector('.types__enlace');
             let enlace__privado = valor.querySelector('.types__enlace__private');
-            let enlace__friends = valor.querySelector('.types__enlace__friends');
             let publico = valor.querySelector('.enlace__public');
             let privado = valor.querySelector('.enlace__privado');
-            let friends = valor.querySelector('.enlace__friends');
             // comentario y cambiar el nombre
             let comentario_result = valor.querySelector('.comentario__element');
             // download file button
@@ -439,14 +435,6 @@ window.addEventListener('load', () => {
                 document.execCommand('copy');
                 e.stopPropagation();
             })
-
-            enlace__friends.addEventListener('click', (e) => {
-                // Copia el contenido del input
-                console.log('clic en el enlace friends');
-                friends.select();
-                document.execCommand('copy');
-                e.stopPropagation();
-            })
             // FIN DEL COPY DE LOS ENLACES
             no_borrar.addEventListener('click', (e) => {
                 borrar_ventana.style.display = 'none';
@@ -463,7 +451,6 @@ window.addEventListener('load', () => {
                     comentario_form.style.display = 'none';
                     share__form.style.display = 'none';
                     value__information.style.display = 'none';
-                    form_friends.style.display = 'none';
                     form_privado.style.display = 'none';
                     form_publico.style.display = 'none';
                     borrar_ventana.style.display = 'block';
@@ -475,7 +462,6 @@ window.addEventListener('load', () => {
             });
             boton_publico.addEventListener('click', (e) => {
                 // Cerramos los posibles forms
-                form_friends.style.display = 'none';
                 form_privado.style.display = 'none';
                 // Abrimos el publico
                 form_publico.style.display = 'flex';
@@ -495,18 +481,9 @@ window.addEventListener('load', () => {
 
             boton_privado.addEventListener('click', (e) => {
                 // Cerramos los posibles forms
-                form_friends.style.display = 'none';
                 form_publico.style.display = 'none';
                 // Abrimos el publico
                 form_privado.style.display = 'flex';
-                e.stopPropagation();
-            });
-            boton_friends.addEventListener('click', (e) => {
-                // Cerramos los posibles forms
-                form_privado.style.display = 'none';
-                form_publico.style.display = 'none';
-                // Abrimos el publico
-                form_friends.style.display = 'flex';
                 e.stopPropagation();
             });
             share.addEventListener('click', (e) => {
@@ -517,7 +494,6 @@ window.addEventListener('load', () => {
                     // Cerramos todos los formularios
                     form_privado.style.display = 'none';
                     form_publico.style.display = 'none';
-                    form_friends.style.display = 'none';
                     share__form.style.display = 'none';
                 }
                 e.stopPropagation();
@@ -539,7 +515,6 @@ window.addEventListener('load', () => {
                 comentario_form.style.display = 'none';
                 share__form.style.display = 'none';
                 value__information.style.display = 'none';
-                form_friends.style.display = 'none';
                 form_privado.style.display = 'none';
                 form_publico.style.display = 'none';
                 console.log("CLICK EXIT");
