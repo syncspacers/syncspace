@@ -32,6 +32,8 @@ import org.syncspacers.syncspace.service.UsuarioService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 public class UsuarioController {
@@ -202,6 +204,26 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping("/users/changepassword")
+    public String postMethodName(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            @RequestParam String currentPassword,
+            @RequestParam String newPassword,
+            @RequestParam String newPasswordVerify) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+
+        if (usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+            if (!(usuario.getPassword().equals(currentPassword) && newPassword.equals(newPasswordVerify))) {
+                return "redirect:/dashboard/settings?retry=true";
+            }
+
+            usuario.setPassword(newPassword);
+            usuarioService.save(usuario);
+            return "redirect:/dashboard/settings?success=true";
+        }
+
+        return "redirect:/dashboard";
+    }
     
     @PostMapping(value = {"/users/upload/", "/users/upload/{carpetaID}"})
 	public String uploadFile(@RequestParam("file") MultipartFile file,

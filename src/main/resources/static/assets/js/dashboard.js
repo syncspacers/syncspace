@@ -573,4 +573,24 @@ window.addEventListener('load', () => {
             button_back.style.display = 'none'
         }
     }
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let retryLogin = urlParams.get('retry');
+    let successLogin = urlParams.get('success');
+
+    if (retryLogin == "true") {
+        let error__login = document.querySelector('.error__login');
+        if (error__login != null) {
+            error__login.style.display = 'inline';
+        } else {
+            console.log("error__login no encontrado");
+        }
+    } else if (successLogin == "true") {
+        let success__login = document.querySelector('.success__login');
+        if (success__login) {
+            success__login.style.display = 'inline';
+        } else {
+            console.log("success__login no encontrado");
+        }
+    }
 });

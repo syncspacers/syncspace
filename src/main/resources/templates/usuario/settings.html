@@ -172,12 +172,13 @@
                 <div class="settings__header">
                     <h1 class="settings__title">AJUSTES DE LA CUENTA</h1>
                 </div>
-                <form class="settings__content">
+                <form class="settings__content" method="POST" enctype="multipart/form-data" action="/users/changepassword" >
                     <h2 class="settings__subtitle">CAMBIAR CONTRASEÑA</h2>
-                    <input class="settings__text" type="text" value="Contraseña">
-                    <input class="settings__text" type="text" value="Nueva contraseña">
-                    <input class="settings__text" type="text" value="Repetir nueva contraseña">
-                    <h2 class="error__login">¡Alguno de los datos introducidos son incorrectos!</h2>
+                    <input class="settings__text" type="password" name="currentPassword" placeholder="Contraseña">
+                    <input class="settings__text" type="password" name="newPassword" placeholder="Nueva contraseña">
+                    <input class="settings__text" type="password" name="newPasswordVerify" placeholder="Repetir nueva contraseña">
+                    <h2 class="error__login" style="display: none;">¡Alguno de los datos introducidos son incorrectos!</h2>
+                    <h2 class="success__login" style="display: none;">Se ha cambiado la contraseña correctamente</h2>
                     <input class="settings__submit" type="submit">
                 </form>
             </div>

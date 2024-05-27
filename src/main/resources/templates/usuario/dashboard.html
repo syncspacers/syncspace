@@ -179,7 +179,7 @@
                             <div class="value__trash--form">
                                 <h1 class="trash--form">¿Estas seguro de eliminar el archivo?</h1>
                                 <br>
-                                <form class="trash--form__form" method="POST" enctype="multipart/form-data" th:action="@{'/users/deletefolder/' + ${carpeta.id}}" >
+                                <form class="trash--form__form" method="POST" enctype="multipart/form-data" th:action="@{'/users/deletefolder/' + ${carpeta.id}}">
                                     <input class="trash--form__cancel" type="button" value="Cancelar">
                                     <input class="trash--form__delete" type="submit" value="Eliminar">
                                 </form>
