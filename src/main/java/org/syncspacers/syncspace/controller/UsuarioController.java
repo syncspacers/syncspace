@@ -373,8 +373,11 @@ public class UsuarioController {
 
             carpetaPadre = archivo.getCarpeta();
             if (archivo.getNombre().contains(".")) {
-                String extension = archivo.getNombre().split("\\.")[-1];
-                archivo.setNombre(nuevoNombre + "." + extension);
+                String[] splitName = archivo.getNombre().split("\\.");
+                if (splitName.length > 1) {
+                    String extension = splitName[splitName.length - 1];
+                    archivo.setNombre(nuevoNombre + "." + extension);
+                }
             }
             archivoService.save(archivo);
         }
