@@ -558,17 +558,19 @@ window.addEventListener('load', () => {
     });
 
     let button_back = document.querySelector('.content__back');
-    let carpetaPadre = button_back.getAttribute("carpetaPadre");
-    let carpetaRaiz = button_back.getAttribute("carpetaRaiz");
-    if (carpetaRaiz == "false") {
-        button_back.addEventListener('click', (e) => {
-            if (carpetaPadre == null) {
-                window.location.href = "/dashboard";
-            } else {
-                window.location.href = "/dashboard/folder/" + carpetaPadre;
-            }
-        });
-    } else {
-        button_back.style.display = 'none'
+    if (button_back) {
+        let carpetaPadre = button_back.getAttribute("carpetaPadre");
+        let carpetaRaiz = button_back.getAttribute("carpetaRaiz");
+        if (carpetaRaiz == "false") {
+            button_back.addEventListener('click', (e) => {
+                if (carpetaPadre == null) {
+                    window.location.href = "/dashboard";
+                } else {
+                    window.location.href = "/dashboard/folder/" + carpetaPadre;
+                }
+            });
+        } else {
+            button_back.style.display = 'none'
+        }
     }
 });
