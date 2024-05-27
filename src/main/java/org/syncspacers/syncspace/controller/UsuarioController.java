@@ -162,12 +162,19 @@ public class UsuarioController {
         return "usuario/login";
     }
 
+    @RequestMapping("/logout")
+    public String logout(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            Model model) {
+        usuarioService.logout(sessionToken);
+        return "redirect:/login";
+    }
+
     @PostMapping("/users/save")
     public String saveUsuario(Usuario usuario) {
         if (usuarioService.userExists(usuario.getEmail())) {
             return "redirect:/register?retry=true";
         }
-        
+
         usuarioService.save(usuario);
         return "redirect:/login";
     }

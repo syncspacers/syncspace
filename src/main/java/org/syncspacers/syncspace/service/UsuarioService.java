@@ -79,6 +79,10 @@ public class UsuarioService {
         return token;
     }
 
+    public void logout(String token) {
+        userMap.remove(token);
+    }
+
     public boolean userExists(String email) {
         return usuarioRepository.findById(email).isPresent();
     }
