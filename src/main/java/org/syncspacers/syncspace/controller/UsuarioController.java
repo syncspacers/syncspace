@@ -3,6 +3,7 @@ package org.syncspacers.syncspace.controller;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -72,11 +73,17 @@ public class UsuarioController {
         List<Carpeta> carpetas = null;
         String carpetaPadre = "";
         boolean papelera = "papelera".equals(seccion);
+        boolean compartidos = "compartido".equals(seccion);
 
         if (usuarioData.isPresent()) {
             usuario = usuarioData.get();
             
-            if (papelera) {
+            if (compartidos)  {
+                archivos = usuario.getArchivos();
+                carpetas = new LinkedList<>();
+
+                archivos.removeIf(elem -> elem.getPublicID() == null && elem.getPasswordID() == null);
+            } else if (papelera) {
                 archivos = usuario.getArchivos();
                 carpetas = usuario.getCarpetas();
 
