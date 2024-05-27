@@ -256,10 +256,6 @@
                                         <input class="checkbutton__public" id="enlace_temporal" name="enlace__temporal" type="checkbox">
                                         <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
                                     </div>
-
-                                    <span class="types__copied">
-                                        ¡Enlace copiado!
-                                    </span>
                                 </div>
 
                                 <div class="share__types--private">
@@ -287,9 +283,6 @@
                                         <label for="enlace_temporal" class="enlace__temporal">Temporal</label>
                                     </div>
 
-                                    <span class="types__copied">
-                                        ¡Enlace copiado!
-                                    </span>
                                 </div>
                                 <div class="information__exit">
                                     <i class="fa-solid fa-xmark"></i>
@@ -369,7 +362,7 @@
                                     </div>
     
                                     <div class="types__enlace">
-                                        <div th:if="${archivo.publicID} != null">
+                                        <div class="types__enlace" th:if="${archivo.publicID} != null">
                                             <input class="enlace__public" type="text" th:value="@{${serverURL} + '/share/public/' + ${archivo.publicID}}">
                                         </div>
                                     </div>
@@ -383,10 +376,6 @@
                                             <input type="submit" class="types__button types__modify__link" value="Borrar enlace"></input>
                                         </form>
                                     </div>
-    
-                                    <span class="types__copied">
-                                        ¡Enlace copiado!
-                                    </span>
                                 </div>
     
                                 <div class="share__types--private">
@@ -395,7 +384,7 @@
                                     </div>
     
                                     <div class="types__enlace__private">
-                                        <div th:if="${archivo.passwordID} != null">
+                                        <div class="types__enlace__private" th:if="${archivo.passwordID} != null">
                                             <input class="enlace__privado" type="text" th:value="@{${serverURL} + '/share/private/' + ${archivo.passwordID}}">
                                         </div>
                                     </div>
@@ -420,9 +409,6 @@
                                         </form>
                                     </div>
     
-                                    <span class="types__copied">
-                                        ¡Enlace copiado!
-                                    </span>
                                 </div>
 
                                 <div class="information__exit">

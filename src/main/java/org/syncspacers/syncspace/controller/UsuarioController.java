@@ -306,7 +306,6 @@ public class UsuarioController {
                 
                 carpeta.setCarpetaPadre(carpetaPadre);
             }
-            System.out.println("CARPETA CREADA CON PESO 0");
             carpeta.setSize(0);
             carpetaService.save(carpeta);
         }
@@ -337,8 +336,10 @@ public class UsuarioController {
             //
 
             carpetaPadre = archivo.getCarpeta();
-            String extension = archivo.getNombre().split("\\.")[1];
-            archivo.setNombre(nuevoNombre + "." + extension);
+            if (archivo.getNombre().contains(".")) {
+                String extension = archivo.getNombre().split("\\.")[-1];
+                archivo.setNombre(nuevoNombre + "." + extension);
+            }
             archivoService.save(archivo);
         }
 

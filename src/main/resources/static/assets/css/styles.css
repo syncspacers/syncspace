@@ -1386,6 +1386,8 @@ body {
     transition: all 300ms ease-in-out;
     font-size: 1.2rem;
     outline: none;
+    padding: 0.3rem;
+    margin-top: 1.5rem;
 }
 
 .types__button {
@@ -1396,6 +1398,9 @@ body {
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 1.3rem;
     cursor: pointer;
+    color: white;
+    padding: 0.3rem;
+    width: 10rem !important;
 }
 
 .types__button:hover {
@@ -1414,6 +1419,7 @@ body {
 .types__enlace--download {
     font-size: 0.9rem;
     color: var(--color-black);
+    text-align: center;
 }
 
 .types__amigos {
@@ -2016,4 +2022,65 @@ body {
     color: red;
     font-size: 1.2rem;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.dashboard__content,
+.dashboard__settings {
+    width: 100%;
+    height: 85%;
+}
+
+.dashboard__settings {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings__title {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2.8rem;
+}
+
+.settings__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.settings__text {
+    height: 4.2rem;
+    width: 128%;
+    border-radius: 1rem;
+    background: linear-gradient(90deg, rgb(244, 244, 244), rgb(213, 213, 221));
+    color: var(--color-gray);
+    padding: 1rem;
+    font-size: 1.5rem;
+    box-shadow: 0px 2px 10px -4px var(--color-black);
+    font-weight: 400;
+    border: none;
+    outline: none;
+}
+
+.settings__subtitle {
+    font-size: 2rem;
+}
+
+.settings__submit {
+    width: 24rem;
+    height: 4rem;
+    font-family: Anton, sans-serif;
+    letter-spacing: 0.1rem;
+    border-radius: 3rem;
+    border: none;
+    font-size: 1.6rem;
+    background: linear-gradient(90deg, rgb(26, 222, 228), rgb(142, 24, 181));
+    color: var(--color-white);
+    box-shadow: 0px 0px 1px var(--color-black);
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
 }
