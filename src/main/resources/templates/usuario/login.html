@@ -53,6 +53,11 @@
             </div>
             <div class="left__session">
                 <a class="session__link" th:href="@{/register}">¿No tienes una cuenta? ¡Créala!</a>
+
+                <div class="error__login__container" style="display: none;">
+                    <br>
+                    <a class="error__login">¡Alguno de los datos introducidos son incorrectos!</a>
+                </div>
             </div>
             <div class="left__button">
                 <input type="submit" class="button__login" value="INICIAR SESIÓN" />

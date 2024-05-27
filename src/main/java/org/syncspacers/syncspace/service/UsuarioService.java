@@ -78,4 +78,8 @@ public class UsuarioService {
         userMap.put(token, usuario.get().getEmail());
         return token;
     }
+
+    public boolean userExists(String email) {
+        return usuarioRepository.findById(email).isPresent();
+    }
 }

@@ -71,4 +71,16 @@ window.addEventListener('load', () => {
         },
         retina_detect: true
     });
+
+    let urlParams = new URLSearchParams(window.location.search);
+    let retryLogin = urlParams.get('retry');
+
+    if (retryLogin == "true") {
+        let error__login__container = document.querySelector('.error__login__container');
+        if (error__login__container != null) {
+            error__login__container.style.display = 'inline';
+        } else {
+            console.log("error__login__container no encontrado");
+        }
+    }
 });

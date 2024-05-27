@@ -164,6 +164,10 @@ public class UsuarioController {
 
     @PostMapping("/users/save")
     public String saveUsuario(Usuario usuario) {
+        if (usuarioService.userExists(usuario.getEmail())) {
+            return "redirect:/register?retry=true";
+        }
+        
         usuarioService.save(usuario);
         return "redirect:/login";
     }
@@ -173,7 +177,7 @@ public class UsuarioController {
         String token = usuarioService.login(usuario.getEmail(), usuario.getPassword());
 
         if (token.isEmpty()) {
-            return "redirect:/login";
+            return "redirect:/login?retry=true";
         } else {
             Cookie sessionCookie = new Cookie(TOKEN_COOKIE, String.valueOf(token));
             sessionCookie.setMaxAge(86400);

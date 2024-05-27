@@ -745,6 +745,7 @@ body {
 .left__session {
     width: 64%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: left;
     margin: 2rem auto;
@@ -2008,4 +2009,11 @@ body {
 .header__link {
     color: inherit;
     text-decoration: none;
+}
+
+.error__login {
+    display: block;
+    color: red;
+    font-size: 1.2rem;
+    font-family: Arial, Helvetica, sans-serif;
 }
