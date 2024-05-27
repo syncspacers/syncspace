@@ -8,16 +8,16 @@ window.addEventListener('load', () => {
 
         // Convertir el NodeList en un array
         const array = Array.from(nodeList);
-
         // Función de comparación para ordenar por peso
         function sortBySize(a, b) {
-            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
-            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
-            return sizeA - sizeB;
+            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace('MB', '').replace(',', '.'));
+            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace('MB', '').replace(',', ''));
+            return sizeA - 1;
         }
 
         const container = document.querySelector('.content__values'); // Reemplaza '.container' con el selector del contenedor de los elementos
         // Ordenar el array por peso
+        container.innerHTML = '';
         array.sort(sortBySize);
 
         // Actualizar el orden en el DOM
@@ -33,13 +33,15 @@ window.addEventListener('load', () => {
 
         // Función de comparación para ordenar por peso
         function sortBySizeDesc(a, b) {
-            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
-            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace('.', ',').split(',')[0]);
+            const sizeA = parseFloat(a.querySelector('.info__size').textContent.replace(',', '.').replace('MB', ''));
+            const sizeB = parseFloat(b.querySelector('.info__size').textContent.replace(',', '.').replace('MB', ''));
+
             return sizeB - sizeA; // Orden descendente por peso
         }
 
         const container = document.querySelector('.content__values'); // Reemplaza '.container' con el selector del contenedor de los elementos
         // Ordenar el array por peso
+        container.innerHTML = '';
         array.sort(sortBySizeDesc);
 
         // Actualizar el orden en el DOM

@@ -153,7 +153,7 @@ public class Archivo {
     public void setContenido(byte[] contenido) {
         this.contenido = contenido;
         this.filesize = contenido.length;
-        this.fileSizeMB = String.format("%.2fMB", bytesToMB(this.filesize));
+        this.fileSizeMB = String.format("%.2fMB", bytesToMB());
     }
 
     public Long getPublicID() {
@@ -193,7 +193,7 @@ public class Archivo {
         return String.format("%s", nombre);
     }
 
-    private float bytesToMB(long bytes) {
-        return bytes / 1024f / 1024f;
+    public float bytesToMB() {
+        return this.filesize / 1024f / 1024f;
     }
 }

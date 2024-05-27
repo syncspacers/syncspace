@@ -57,6 +57,7 @@ public class UsuarioController {
      * Necesita un valor correcto para TOKEN_COOKIE, en otro caso redirecciona a la página de
      * inicio de sesión
      */
+
     @RequestMapping(value = {"dashboard", "/dashboard/{seccion}", "/dashboard/folder/{folderID}"})
     public String dashboard(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
             @PathVariable(required = false) Long folderID,
@@ -190,6 +191,8 @@ public class UsuarioController {
                 }
                 //
 
+                carpeta.setSize(carpeta.getSize() + archivo.bytesToMB());
+
                 archivo.setCarpeta(carpeta);
             }
             archivoService.save(archivo);
@@ -281,11 +284,11 @@ public class UsuarioController {
                 if (!carpetaPadre.getUsuario().getEmail().equals(usuario.getEmail())) {
                     return "redirect:/dashboard";
                 }
-                //
-
+                
                 carpeta.setCarpetaPadre(carpetaPadre);
             }
-
+            System.out.println("CARPETA CREADA CON PESO 0");
+            carpeta.setSize(0);
             carpetaService.save(carpeta);
         }
 
@@ -315,7 +318,8 @@ public class UsuarioController {
             //
 
             carpetaPadre = archivo.getCarpeta();
-            archivo.setNombre(nuevoNombre);
+            String extension = archivo.getNombre().split("\\.")[1];
+            archivo.setNombre(nuevoNombre + "." + extension);
             archivoService.save(archivo);
         }
 

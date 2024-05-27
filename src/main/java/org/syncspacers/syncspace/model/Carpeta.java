@@ -35,6 +35,27 @@ public class Carpeta {
 
     private String nombre;
 
+    private double size;
+
+    private String formatedSize;
+
+    public double getSize() {
+        return this.size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
+        if (this.size > 0) {
+            this.formatedSize = String.format("%.2f", size).replace('.', ',');
+        } else {
+            this.formatedSize = "0,00";
+        }
+    }
+
+    public String getFormatedSize() {
+        return this.formatedSize;
+    }
+
     public Long getId() {
         return id;
     }

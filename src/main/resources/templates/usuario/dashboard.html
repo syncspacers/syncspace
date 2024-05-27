@@ -197,6 +197,7 @@
                             </div>
                             <div class="value__title" th:text="${carpeta.nombre}" />
                             <div class="value__info">
+                                <p class="info__size" th:text="${carpeta.formatedSize + 'MB'}"></p>
                                 <p class="info__date" th:text="${#dates.format(carpeta.fechaDeSubida, 'yyyy-MM-dd HH:mm:ss')}"></p>
                             </div>
 
