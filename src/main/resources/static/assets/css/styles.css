@@ -1988,7 +1988,7 @@ body {
     cursor: pointer;
 }
 
-.trash__href {
+.trash__href, .settings__href {
     color: inherit;
     text-decoration: none;
 }

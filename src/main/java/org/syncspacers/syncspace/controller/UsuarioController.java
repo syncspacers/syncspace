@@ -129,6 +129,21 @@ public class UsuarioController {
         }
     }
 
+    @RequestMapping("/dashboard/settings")
+    public String settings(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+            Model model) {
+        Optional<Usuario> usuarioData = usuarioService.getByToken(sessionToken);
+
+        if (usuarioData.isPresent()) {
+            Usuario usuario = usuarioData.get();
+
+            model.addAttribute("usuario", usuario);
+            return "usuario/settings";
+        }
+
+        return "redirect:/login";
+    }
+
     @RequestMapping("/register")
     public String addUsuario(Model model) {
         model.addAttribute("usuario", new Usuario());
