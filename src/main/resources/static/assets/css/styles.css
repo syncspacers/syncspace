@@ -1092,6 +1092,7 @@ body {
     background: lightblue;
     */
     overflow-y: scroll;
+    padding-right: 15rem;
 }
 
 .content__values::-webkit-scrollbar {

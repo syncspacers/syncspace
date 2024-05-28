@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="/assets/css/styles.css">
     <!-- Archivos de JS custom -->
     <script src="/assets/js/dashboard.js"></script>
+    <script>
+
+    </script>
 </head>
 <body>
 <header class="header__dashboard">
@@ -18,61 +21,6 @@
     </div>
 
     <div class="header__buttons">
-        <div class="buttons__upgrade">
-            <button class="upgrade__button">SUBIR</button>
-        </div>
-        <div class="buttons__signup_login">
-            <div class="signup_login__filter">
-                <i class="fa-solid fa-filter"></i>
-                FILTRAR
-                <div class="filter__filtros">
-                    <div id="filtros__ligero" class="filtros__name">
-                        Ligeros (< 60MB)
-                    </div>
-                    <div id="filtros__pesado" class="filtros__name">
-                        Pesados (>= 60MB)
-                    </div>
-                    <div id="filtros__reiniciar" class="filtros__name">
-                        Reiniciar filtros
-                    </div>
-                </div>
-            </div>
-            <div class="signup_login__order">
-                <i class="fa-solid fa-arrow-down-wide-short"></i>
-                ORDENAR
-                <div class="filter__filtros--order">
-                    <div id="order__ligero" class="filtros__name">
-                        Más ligeros
-                    </div>
-                    <div id="order__pesado" class="filtros__name">
-                        Más pesados
-                    </div>
-                    <div id="order__antiguo" class="filtros__name">
-                        Más antiguo
-                    </div>
-                    <div id="order__reciente" class="filtros__name">
-                        Más reciente
-                    </div>
-                </div>
-            </div>
-
-            <div class="signup_login__lupa">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-
-            <div class="signup_login__add-folder">
-                <i class="fa-solid fa-folder-plus"></i>
-                <form class="signup_login__form-folder" method="POST" enctype="multipart/form-data" th:action="@{'/users/newfolder/' + ${carpetaActual}}">
-                    <div class="form-folder__top">
-                        <h1 class="form-folder__header">Crear una nueva carpeta</h1>
-                    </div>
-                    <div class="form-folder__bottom">
-                        <input class="form-folder__name" type="text" placeholder="Inserta un nombre" minlength="3" required name="nombreCarpeta">
-                        <input class="form-folder__button" type="submit" value="Crear">
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 </header>
 
@@ -115,11 +63,11 @@
                 </li>
                 <li class="left__option left__files">
                     <i class="option-icon fa-solid fa-folder"></i>
-                    MIS ARCHIVOS
+                    <a class="shared__href" th:href="@{'/dashboard'}">MIS ARCHIVOS</a>
                 </li>
                 <li class="left__option">
                     <i class="option-icon fa-solid fa-share"></i>
-                    <a class="shared__href" href="/dashboard/compartido">COMPARTIDO</a>
+                    <a class="shared__href" th:href="@{'/dashboard/compartido'}">COMPARTIDO</a>
                 </li>
                 <li class="left__option left__trash">
                     <i class="option-icon fa-solid fa-trash"></i>
@@ -131,7 +79,7 @@
                 </li>
                 <li class="left__option">
                     <i class="option-icon fa-solid fa-right-from-bracket"></i>
-                    <a class="logout__href" href="/logout">SALIR</a>
+                    <a class="logout__href" th:href="@{'/logout'}">SALIR</a>
                 </li>
             </div>
 
@@ -143,23 +91,6 @@
 
     <section class="dashboard__right">
         <article class="dashboard__header">
-            <div class="header__left">
-                <div class="right__folders">
-                    <i class="fa-solid fa-folder"></i>
-                    MIS CARPETAS
-                </div>
-                <div class="right__files">
-                    <i class="fa-solid fa-file"></i>
-                    MIS ARCHIVOS
-                </div>
-            </div>
-            <form action="" class="header__right-dashboard">
-                <div class="right-dashboard__input">
-                    <input class="input__dashboard" type="text" placeholder="Inserta el nombre de un archivo">
-                </div>
-                <div class="right-dashboard__button">
-                </div>
-            </form>
         </article>
 
         <article class="dashboard__content">
@@ -170,9 +101,9 @@
                 </div>
                 <form class="settings__content" method="POST" enctype="multipart/form-data" action="/users/changepassword" >
                     <h2 class="settings__subtitle">CAMBIAR CONTRASEÑA</h2>
-                    <input class="settings__text" type="password" name="currentPassword" placeholder="Contraseña">
-                    <input class="settings__text" type="password" name="newPassword" placeholder="Nueva contraseña">
-                    <input class="settings__text" type="password" name="newPasswordVerify" placeholder="Repetir nueva contraseña">
+                    <input class="settings__text" type="password" name="currentPassword" placeholder="Contraseña" required>
+                    <input class="settings__text" type="password" name="newPassword" placeholder="Nueva contraseña" required>
+                    <input class="settings__text" type="password" name="newPasswordVerify" placeholder="Repetir nueva contraseña" required>
                     <h2 class="error__login" style="display: none;">¡Alguno de los datos introducidos son incorrectos!</h2>
                     <h2 class="success__login" style="display: none;">Se ha cambiado la contraseña correctamente</h2>
                     <input class="settings__submit" type="submit">
