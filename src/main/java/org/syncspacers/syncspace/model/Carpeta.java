@@ -1,6 +1,7 @@
 package org.syncspacers.syncspace.model;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -38,6 +39,11 @@ public class Carpeta {
     private double size;
 
     private String formatedSize;
+
+    public Carpeta() {
+        this.archivos = new LinkedList<>();
+        this.carpetas = new LinkedList<>();
+    }
 
     public double getSize() {
         return this.size;

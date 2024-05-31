@@ -25,6 +25,7 @@ public class Usuario {
 
     public Usuario() {
         this.archivos = new LinkedList<>();
+        this.carpetas = new LinkedList<>();
     }
 
     /**
@@ -84,6 +85,8 @@ public class Usuario {
      * @param archivos La lista de archivos del usuario
      */
     public void setArchivos(List<Archivo> archivos) {
+        if (archivos == null) throw new RuntimeException("Los archivos no pueden ser nulos");
+
         this.archivos = archivos;
     }
 
@@ -92,6 +95,19 @@ public class Usuario {
     }
 
     public void setCarpetas(List<Carpeta> carpetas) {
+        if (carpetas == null) throw new RuntimeException("Las carpetas no pueden ser nulas");
+
         this.carpetas = carpetas;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Usuario) {
+            Usuario usuario = (Usuario) object;
+
+            return email.equals(usuario.getEmail());
+        }
+        
+        return false;
     }
 }
