@@ -32,7 +32,6 @@ import org.syncspacers.syncspace.service.UsuarioService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
@@ -205,7 +204,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/users/changepassword")
-    public String postMethodName(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
+    public String changePassword(@CookieValue(value = TOKEN_COOKIE, defaultValue = "") String sessionToken,
             @RequestParam String currentPassword,
             @RequestParam String newPassword,
             @RequestParam String newPasswordVerify) {
